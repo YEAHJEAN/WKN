@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+.mypagebutton {
+  cursor: pointer;
+  width: 120px;
+  padding: 10px;
+  border: none;
+  background: none;
+  color: black;
+  margin-right: 50px;
+  font-size: 22px;
+  font-family: 'Jua', sans-serif;
+  position: relative;
+  top: -10px;
+}
+
+.mypagebutton:hover {
+  background: none;
+}
