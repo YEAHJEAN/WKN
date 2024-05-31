@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Signup from './Signup';
-import Login from './Login';
-import Home from './Home';
-import Mypage from './Mypage';
-import Post from './Post';
+import Signup from './frontend/src/Signup';
+import Login from './frontend/src/Login';
+import Home from './frontend/src/Home';
+import Mypage from './frontend/src/Mypage';
+import Post from './frontend/src/Post';
 
 const App = () => {
   // 회원가입 요청을 서버에 보내는 함수
