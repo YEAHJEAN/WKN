@@ -26,7 +26,7 @@ const MyPage = () => {
 
   const handleDeleteAccount = async () => {
     try {
-      await axios.delete('http://localhost:3001/user/delete', {
+      await axios.delete('http://43.202.124.253/api/user/delete', {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem('login-token')}`
         }

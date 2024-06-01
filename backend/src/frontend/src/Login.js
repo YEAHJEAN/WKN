@@ -41,7 +41,7 @@ function Login() {
     // 유효성 검사 통과 여부 확인
     if (Object.keys(errors).length === 0) {
       try {
-        const response = await axios.post('http://localhost:3001/login', formData);
+        const response = await axios.post('http://43.202.124.253/api/login', formData);
         console.log(response.data);
 
         // 로그인 성공 시 토큰 저장

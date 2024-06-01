@@ -50,7 +50,7 @@ function Post() {
       console.log('전송하는 데이터:', newPost); // 새로운 콘솔로그 추가
 
 
-      const response = await axios.post('http://localhost:3001/posts', newPost);
+      const response = await axios.post('http://43.202.124.253/api/posts', newPost);
 
       if (response.status === 200) {
         console.log('게시되었습니다.');

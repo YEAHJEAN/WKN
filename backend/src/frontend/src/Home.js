@@ -15,7 +15,7 @@ const Home = () => {
 
   const getPosts = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/posts');
+      const response = await axios.get('http://43.202.124.253/api/posts');
       setPosts(response.data);
     } catch (error) {
       console.error('게시글을 불러오는 중 오류 발생:', error);

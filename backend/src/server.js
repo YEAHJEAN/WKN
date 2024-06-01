@@ -29,7 +29,7 @@ pool.getConnection((err, _connection) => {
     }
 });
 
-app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+app.use(cors({ credentials: true, origin: "http://43.202.124.253" }));
 app.use(bodyParser.json()); // JSON 형식의 요청 body를 파싱
 
 // 회원가입 엔드포인트

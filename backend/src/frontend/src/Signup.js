@@ -58,7 +58,7 @@ const Signup = () => {
           password: formData.password,
           email: `${formData.email}@${formData.emailDomain}`
         };
-        await axios.post('http://localhost:3001/signup', requestData);
+        await axios.post('http://43.202.124.253/api/signup', requestData);
         alert('회원가입 성공!');
         navigate('/login');
       } catch (error) {
