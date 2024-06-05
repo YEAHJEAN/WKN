@@ -24,8 +24,8 @@
     "web-vitals": "^4.0.1"
   },
   "scripts": {
-    "start": "node server.js",
-    "start:pm2": "pm2 start server.js --name backend",
+    "start": "node src/server.js",
+    "start:pm2": "pm2 start src/server.js --name backend",
     "restart:pm2": "pm2 restart backend",
     "stop:pm2": "pm2 stop backend",
     "delete:pm2": "pm2 delete backend"
