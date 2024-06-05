@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 import axios from 'axios';
 import './Chatroom.css';
 
-const socket = io('http://43.202.124.253');
+const socket = io('http://43.202.124.253:3001');
 
 function Chatroom() {
   const navigate = useNavigate();

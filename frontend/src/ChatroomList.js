@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import io from 'socket.io-client';
 
-const socket = io('http://43.202.124.253');
+const socket = io('http://43.202.124.253:3001');
 
 function ChatroomList({ username }) { // username을 props로 전달받음
   const [chatrooms, setChatrooms] = useState([]);

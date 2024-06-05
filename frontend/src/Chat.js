@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import ChatroomList from './ChatroomList';
 import './Chat.css';
 
-const socket = io('http://43.202.124.253');
+const socket = io('http://43.202.124.253:3001');
 
 function Chat() {
   const { chatroom, username } = useParams();

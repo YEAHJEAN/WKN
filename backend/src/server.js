@@ -9,7 +9,7 @@ const socketIo = require('socket.io');
 const path = require('path');
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 
 // MySQL 데이터베이스 연결 설정
 const pool = mysql.createPool({
