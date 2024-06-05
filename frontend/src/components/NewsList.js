@@ -27,7 +27,12 @@ const NewsList = ({ category }) => {
             try {
                 const query = category === 'all' ? '' : `&category=${category}`;
                 const response = await axios.get(
-                    `https://newsapi.org/v2/top-headlines?country=jp${query}&apiKey=db05eddf2a4b43c2b3378b2dbaa7eeef`
+                    `https://newsapi.org/v2/top-headlines?country=jp${query}&apiKey=db05eddf2a4b43c2b3378b2dbaa7eeef`,
+                    {
+                        headers: {
+                            'Accept': 'application/json',
+                        },
+                    }
                 );
                 setArticles(response.data.articles);
             } catch(e) {
