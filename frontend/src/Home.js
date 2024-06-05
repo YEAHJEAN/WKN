@@ -23,7 +23,8 @@ const Home = () => {
   const getPosts = async (searchTerm = '', category = '') => {
     try {
       const response = await axios.get('/api/posts');
-      const filteredPosts = response.data.filter(post =>
+      const postsData = Array.isArray(response.data) ? response.data : []; // 데이터 형식 확인 및 변환
+      const filteredPosts = postsData.filter(post =>
         (post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
          post.author.toLowerCase().includes(searchTerm.toLowerCase())) &&
         (category === '' || post.category === category)
