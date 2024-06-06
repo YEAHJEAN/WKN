@@ -36,7 +36,7 @@ function MyPage() {
       .then(response => {
         sessionStorage.removeItem('email');
         console.log('세션에서 이메일 삭제:', email);
-        navigate('/home');
+        navigate('/login');
       })
       .catch(error => {
         console.error('로그아웃 실패:', error);
