@@ -8,6 +8,7 @@ const http = require('http');
 const socketIo = require('socket.io');
 const path = require('path');
 const axios = require('axios');
+const helmet = require('helmet');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -34,6 +35,7 @@ pool.getConnection((err, connection) => {
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(helmet());
 
 // 정적 파일 제공 설정 (프론트엔드 빌드 파일)
 app.use(express.static(path.join(__dirname, '../../frontend/build')));
@@ -357,6 +359,7 @@ app.get('/api/exchange-rate', async (req, res) => {  // URL 수정
 // 뉴스 API 프록시 엔드포인트
 app.get('/api/news', async (req, res) => {
     try {
+        const category = req.query.category || 'all';
         const query = category === 'all' ? '' : `&category=${category}`;
         const response = await axios.get(`https://newsapi.org/v2/top-headlines?country=jp${query}&apiKey=db05eddf2a4b43c2b3378b2dbaa7eeef`);
         res.json(response.data);
