@@ -8,7 +8,6 @@ const http = require('http');
 const socketIo = require('socket.io');
 const path = require('path');
 const axios = require('axios');
-const helmet = require('helmet');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -35,7 +34,6 @@ pool.getConnection((err, connection) => {
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(helmet());
 
 // 정적 파일 제공 설정 (프론트엔드 빌드 파일)
 app.use(express.static(path.join(__dirname, '../../frontend/build')));
