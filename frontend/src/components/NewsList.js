@@ -24,11 +24,7 @@ const NewsList = ({ category }) => {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const response = await axios.get(`/api/news`, {
-                    params: {
-                        category: category === 'all' ? '' : category
-                    }
-                });
+                const response = await axios.get(`/api/news?category=${category}`);
                 setArticles(response.data.articles);
             } catch (e) {
                 console.log(e);
