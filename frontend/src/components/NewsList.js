@@ -21,45 +21,36 @@ const NewsList = ({ category }) => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        // async를 사용하는 함수 따로 선언
         const fetchData = async () => {
             setLoading(true);
             try {
-                const query = category === 'all' ? '' : `&category=${category}`;
-                const response = await axios.get(
-                    `https://newsapi.org/v2/top-headlines?country=jp${query}&apiKey=db05eddf2a4b43c2b3378b2dbaa7eeef`, 
-                    {
-                        headers: {
-                            'Accept': 'application/json',
-                            'Upgrade-Insecure-Requests': 1
-                        }
+                const response = await axios.get(`/api/news`, {
+                    params: {
+                        category: category === 'all' ? '' : category
                     }
-                );
+                });
                 setArticles(response.data.articles);
-            } catch(e) {
+            } catch (e) {
                 console.log(e);
             }
             setLoading(false);
-        };        
+        };
         fetchData();
     }, [category]);
 
-    // 대기 중일 때
-    if(loading) {
+    if (loading) {
         return <NewsListBlock>대기 중...</NewsListBlock>;
     }
-    // 아직 articles 값이 설정되지 않았을 때
-    if(!articles) {
+    if (!articles) {
         return null;
     }
 
-    // articles 값이 유효할 때
     return (
         <NewsListBlock>
             {articles.map(article => (
                 <NewsItem key={article.url} article={article} />
             ))}
-        </NewsListBlock>    
+        </NewsListBlock>
     );
 };
 

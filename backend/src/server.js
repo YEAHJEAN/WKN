@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const http = require('http');
 const socketIo = require('socket.io');
 const path = require('path');
+const axios = require('axios');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -352,6 +353,22 @@ app.get('/api/exchange-rate', async (req, res) => {  // URL 수정
       res.status(500).json({ error: 'Failed to fetch exchange rates' });
     }
   });
+
+// 뉴스 API 프록시 엔드포인트
+app.get('/api/news', async (req, res) => {
+    try {
+        const response = await axios.get('https://newsapi.org/v2/top-headlines', {
+            params: {
+                country: 'jp',
+                apiKey: 'db05eddf2a4b43c2b3378b2dbaa7eeef'
+            }
+        });
+        res.json(response.data);
+    } catch (error) {
+        console.error('뉴스 API 요청 실패:', error);
+        res.status(500).send('뉴스 데이터를 가져오는 데 실패했습니다.');
+    }
+});
 
 // 서버 시작
 server.listen(port, () => {
