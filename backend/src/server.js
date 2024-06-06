@@ -35,6 +35,21 @@ pool.getConnection((err, connection) => {
 app.use(cors());
 app.use(bodyParser.json());
 
+// 뉴스 API 프록시 엔드포인트
+app.get('/api/news', async (req, res) => {
+    try {
+        const category = req.query.category || 'all';
+        const query = category === 'all' ? '' : `&category=${category}`;
+        console.log(`Fetching news from newsapi.org for category: ${category}`);
+        const response = await axios.get(`https://newsapi.org/v2/top-headlines?country=jp${query}&apiKey=db05eddf2a4b43c2b3378b2dbaa7eeef`);
+        console.log('News fetched from newsapi.org successfully:', response.data);
+        res.json(response.data);
+    } catch (error) {
+        console.error('뉴스 API 요청 실패:', error);
+        res.status(500).send('뉴스 데이터를 가져오는 데 실패했습니다.');
+    }
+});
+
 // 정적 파일 제공 설정 (프론트엔드 빌드 파일)
 app.use(express.static(path.join(__dirname, '../../frontend/build')));
 
@@ -353,19 +368,6 @@ app.get('/api/exchange-rate', async (req, res) => {  // URL 수정
       res.status(500).json({ error: 'Failed to fetch exchange rates' });
     }
   });
-
-// 뉴스 API 프록시 엔드포인트
-app.get('/api/news', async (req, res) => {
-    try {
-        const category = req.query.category || 'all';
-        const query = category === 'all' ? '' : `&category=${category}`;
-        const response = await axios.get(`https://newsapi.org/v2/top-headlines?country=jp${query}&apiKey=db05eddf2a4b43c2b3378b2dbaa7eeef`);
-        res.json(response.data);
-    } catch (error) {
-        console.error('뉴스 API 요청 실패:', error);
-        res.status(500).send('뉴스 데이터를 가져오는 데 실패했습니다.');
-    }
-});
 
 // 서버 시작
 server.listen(port, () => {

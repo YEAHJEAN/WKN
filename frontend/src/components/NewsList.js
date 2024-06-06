@@ -24,12 +24,14 @@ const NewsList = ({ category }) => {
         const fetchData = async () => {
             setLoading(true);
             try {
+                console.log(`Fetching news for category: ${category}`);
                 const response = await axios.get(`/api/news`, {
                     params: { category } // 카테고리 값을 쿼리 파라미터로 전달
                 });
+                console.log('News fetched successfully:', response.data);
                 setArticles(response.data.articles);
             } catch (e) {
-                console.log(e);
+                console.log('Error fetching news:', e);
             }
             setLoading(false);
         };
