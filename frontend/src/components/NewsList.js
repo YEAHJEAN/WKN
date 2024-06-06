@@ -26,20 +26,21 @@ const NewsList = ({ category }) => {
             setLoading(true);
             try {
                 const query = category === 'all' ? '' : `&category=${category}`;
-                const url = `https://newsapi.org/v2/top-headlines?country=jp${query}&apiKey=db05eddf2a4b43c2b3378b2dbaa7eeef`;
-                console.log("Request URL:", url);
-                const response = await axios.get(url, {
-                    headers: {
-                        'Accept': 'application/json'
+                const response = await axios.get(
+                    `https://newsapi.org/v2/top-headlines?country=jp${query}&apiKey=db05eddf2a4b43c2b3378b2dbaa7eeef`, 
+                    {
+                        headers: {
+                            'Accept': 'application/json',
+                            'Upgrade-Insecure-Requests': 1
+                        }
                     }
-                });
-                console.log("Response data:", response.data);
+                );
                 setArticles(response.data.articles);
             } catch(e) {
-                console.error("API 요청 중 오류 발생:", e);
+                console.log(e);
             }
             setLoading(false);
-        };
+        };        
         fetchData();
     }, [category]);
 
