@@ -356,7 +356,6 @@ app.get('/api/exchange-rate', async (req, res) => {  // URL 수정
 
 // 뉴스 API 프록시 엔드포인트
 app.get('/api/news', async (req, res) => {
-    const category = req.query.category || 'all';
     try {
         const query = category === 'all' ? '' : `&category=${category}`;
         const response = await axios.get(`https://newsapi.org/v2/top-headlines?country=jp${query}&apiKey=db05eddf2a4b43c2b3378b2dbaa7eeef`);
