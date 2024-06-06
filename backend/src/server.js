@@ -23,13 +23,12 @@ const pool = mysql.createPool({
     queueLimit: 0
 });
 
-// MySQL 연결
-pool.getConnection((err, connection) => {
-    if (err) {
-        console.error('MySQL 연결 실패:', err);
-    } else {
-        console.log('MySQL 연결 성공!');
-    }
+// MySQL 연결 테스트
+pool.getConnection().then(connection => {
+    console.log('MySQL 연결 성공!');
+    connection.release();
+}).catch(err => {
+    console.error('MySQL 연결 실패:', err);
 });
 
 app.use(cors());
@@ -48,13 +47,6 @@ app.get('/api/news', async (req, res) => {
         console.error('뉴스 API 요청 실패:', error);
         res.status(500).send('뉴스 데이터를 가져오는 데 실패했습니다.');
     }
-});
-
-// 정적 파일 제공 설정 (프론트엔드 빌드 파일)
-app.use(express.static(path.join(__dirname, '../../frontend/build')));
-
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../frontend/build', 'index.html'));
 });
 
 // HTTP 서버 생성
@@ -175,6 +167,7 @@ app.get('/api/userdata', async (req, res) => {
         connection.release();
 
         if (rows.length > 0) {
+            console.log('사용자 데이터:', rows[0]);  // 데이터 로그 추가
             res.status(200).json({ username: rows[0].username });
         } else {
             res.status(404).send('사용자를 찾을 수 없습니다.');
@@ -368,6 +361,13 @@ app.get('/api/exchange-rate', async (req, res) => {  // URL 수정
       res.status(500).json({ error: 'Failed to fetch exchange rates' });
     }
   });
+
+// 정적 파일 제공 설정 (프론트엔드 빌드 파일)
+app.use(express.static(path.join(__dirname, '../../frontend/build')));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../frontend/build', 'index.html'));
+});
 
 // 서버 시작
 server.listen(port, () => {

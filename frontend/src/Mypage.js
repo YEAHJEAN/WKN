@@ -21,6 +21,7 @@ function MyPage() {
     try {
       const response = await axios.get(`/api/userdata?email=${email}`);
       if (response.status === 200) {
+        console.log('가져온 사용자 데이터:', response.data);  // 데이터 로그 추가
         setUsername(response.data.username);
       } else {
         console.error('사용자 데이터 가져오기 실패');
