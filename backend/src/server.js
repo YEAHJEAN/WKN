@@ -317,7 +317,7 @@ app.delete('/api/posts/:id', async (req, res) => {
 });
 
 // 댓글 저장 엔드포인트 추가
-app.post('/api/comments', async (req, res) => {
+app.post('/api/posts/:post_id/comments', async (req, res) => {
     const { post_id, content, author } = req.body;
 
     try {
@@ -337,7 +337,7 @@ app.post('/api/comments', async (req, res) => {
 });
 
 // 게시글 ID에 따른 댓글 정보를 가져오는 엔드포인트 추가
-app.get('/api/comments/:post_id', async (req, res) => {
+app.get('/api/posts/:post_id/comments', async (req, res) => {
     const postId = req.params.post_id;
 
     try {

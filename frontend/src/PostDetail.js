@@ -28,7 +28,7 @@ const PostDetail = () => {
 
   useEffect(() => {
     console.log('이미지 URL:', post?.imageUrl);
-  }, [post]);  
+  }, [post]);
 
   useEffect(() => {
     if (isEditing) {
