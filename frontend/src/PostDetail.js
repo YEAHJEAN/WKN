@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import './PostDetail.css';
@@ -17,18 +17,7 @@ const PostDetail = () => {
   const [newComment, setNewComment] = useState('');
   const [comments, setComments] = useState([]);
   const [showEditDeleteButtons, setShowEditDeleteButtons] = useState(false);
-  const [imageUrl, setImageUrl] = useState("");
-
-  useEffect(() => {
-    const storedImageUrl = sessionStorage.getItem('imageUrl');
-    if (storedImageUrl) {
-      setImageUrl(storedImageUrl);
-    }
-  }, []);
-
-  useEffect(() => {
-    console.log('이미지 URL:', post?.imageUrl);
-  }, [post]);
+  const [imageUrl, setImageUrl] = useState(""); // 이미지 URL 상태 추가
 
   useEffect(() => {
     if (isEditing) {
@@ -51,7 +40,7 @@ const PostDetail = () => {
     }
   }, [isEditing, post]);
 
-  const fetchComments = useCallback(async () => {
+  const fetchComments = async () => {
     try {
       const response = await axios.get(`/api/posts/${id}/comments`);
       if (Array.isArray(response.data)) {
@@ -63,19 +52,15 @@ const PostDetail = () => {
     } catch (error) {
       console.error('댓글을 불러오는 중 오류 발생:', error);
     }
-  }, [id]);
+  };
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
         const response = await axios.get(`/api/posts/${id}`);
-        if (response.data && typeof response.data === 'object') {
-          setPost(response.data);
-        } else {
-          setPost(null); // 데이터가 올바른 형식이 아닌 경우 null로 설정
-          console.error('게시글 데이터가 올바르지 않습니다:', response.data);
-        }
-        setLoading(false);
+        setPost(response.data);
+        setImageUrl(response.data.imageUrl); // 이미지 URL 설정
+        setLoading(false); // 이미지 URL 설정 후에 로딩 상태 변경
       } catch (error) {
         console.error('게시글을 불러오는 중 오류 발생:', error);
         setError('게시글을 불러오는 중 오류가 발생했습니다.');
@@ -89,7 +74,7 @@ const PostDetail = () => {
 
     fetchPost();
     fetchComments();
-  }, [id, fetchComments]);
+  }, [id]);
 
   useEffect(() => {
     setIsEditing(new URLSearchParams(location.search).get('editing') === 'true');
@@ -169,6 +154,18 @@ const PostDetail = () => {
     }
   };
 
+  // 댓글 삭제 핸들러 함수 추가
+  const handleCommentDelete = async (commentId) => {
+    try {
+      await axios.delete(`/api/posts/${id}/comments/${commentId}`);
+      alert('댓글이 삭제되었습니다.');
+      fetchComments();
+    } catch (error) {
+      console.error('댓글 삭제 중 오류 발생:', error);
+      setError('댓글 삭제 중 오류가 발생했습니다.');
+    }
+  };
+
   const handleImageClick = () => {
     setShowEditDeleteButtons(!showEditDeleteButtons);
   };
@@ -217,11 +214,15 @@ const PostDetail = () => {
             {/* 댓글 목록은 댓글 작성 폼 아래에 표시되며 스크롤 가능합니다. */}
             <div className="comments-scroll" style={{ maxHeight: '150px', overflowY: 'auto' }}>
               <ul>
-                {Array.isArray(comments) && comments.map((comment) => (
-                  <li key={comment.comment_id} className="comment-item">
-                    <p>작성자: {comment.author}</p>
-                    <p>{comment.content}</p>
-                  </li>
+                {comments.map((comment, index) => (
+                  <li key={comment.comment_id} className={`comment-item ${showEditDeleteButtons ? 'with-buttons' : ''}`}>
+                  <p>작성자: {comment.author}</p>
+                  <p>{comment.content}</p>
+                  {/* 삭제 버튼 추가 */}
+                  {comment.author === email && (
+                    <button className="comment-delete-button" onClick={() => handleCommentDelete(comment.comment_id)}>삭제</button>
+                  )}
+                </li>                                             
                 ))}
               </ul>
             </div>

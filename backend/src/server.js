@@ -1,4 +1,5 @@
 const cors = require('cors');
+const multer = require('multer');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql2/promise');
@@ -31,23 +32,21 @@ pool.getConnection().then(connection => {
     console.error('MySQL 연결 실패:', err);
 });
 
+// multer 설정
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads/');
+    },
+    filename: function (req, file, cb) {
+      cb(null, Date.now() + path.extname(file.originalname)); // 파일명 중복 방지
+    },
+  });
+  
+const upload = multer({ storage: storage });
+
 app.use(cors());
 app.use(bodyParser.json());
-
-// 뉴스 API 프록시 엔드포인트
-app.get('/api/news', async (req, res) => {
-    try {
-        const category = req.query.category || 'all';
-        const query = category === 'all' ? '' : `&category=${category}`;
-        console.log(`Fetching news from newsapi.org for category: ${category}`);
-        const response = await axios.get(`https://newsapi.org/v2/top-headlines?country=jp${query}&apiKey=db05eddf2a4b43c2b3378b2dbaa7eeef`);
-        console.log('News fetched from newsapi.org successfully:', response.data);
-        res.json(response.data);
-    } catch (error) {
-        console.error('뉴스 API 요청 실패:', error);
-        res.status(500).send('뉴스 데이터를 가져오는 데 실패했습니다.');
-    }
-});
+app.use(bodyParser.urlencoded({ extended: true })); // URL-encoded bodies를 파싱하기 위해 추가
 
 // HTTP 서버 생성
 const server = http.createServer(app);
@@ -223,8 +222,8 @@ app.post('/api/posts', async (req, res) => {
         }
 
         await connection.execute(
-            'INSERT INTO posts (title, content, category, author, created_at) VALUES (?, ?, ?, ?, NOW())',
-            [title, content, category, author]
+            'INSERT INTO posts (title, content, category, author, imageUrl, created_at) VALUES (?, ?, ?, ?, ?, NOW())',
+            [title, content, category, author, imageUrl]
         );
 
         connection.release();
@@ -235,6 +234,9 @@ app.post('/api/posts', async (req, res) => {
         res.status(500).send('게시글 저장 실패');
     }
 });
+
+// 정적 파일 서빙을 위한 설정 (이미지 접근 가능하도록)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // 홈으로 게시글 정보를 가져오는 엔드포인트 수정
 app.get('/api/posts', async (req, res) => {
@@ -316,40 +318,115 @@ app.delete('/api/posts/:id', async (req, res) => {
     }
 });
 
-// 댓글 저장 엔드포인트 추가
-app.post('/api/posts/:post_id/comments', async (req, res) => {
-    const { post_id, content, author } = req.body;
+// 댓글 저장 엔드포인트
+app.post('/api/posts/:id/comments', async (req, res) => {
+    const postId = req.params.id;
+    const { author, content } = req.body;
+
+    // 현재 시간을 작성일로 설정
+    const created_at = new Date();
+
+    console.log('요청 본문:', req.body); // 디버깅을 위해 요청 본문을 로깅합니다.
+
+    if (!author || !content) {
+        console.error('작성자 또는 내용이 정의되지 않았습니다.');
+        res.status(400).send('작성자와 내용은 필수입니다.');
+        return;
+    }
 
     try {
+        // MySQL 풀에서 연결 가져오기
         const connection = await pool.getConnection();
-        await connection.execute(
-            'INSERT INTO comments (post_id, content, author, created_at) VALUES (?, ?, ?, NOW())',
-            [post_id, content, author]
-        );
+
+        // 게시글이 존재하는지 확인
+        const [rows] = await connection.execute('SELECT * FROM posts WHERE id = ?', [postId]);
+        if (rows.length === 0) {
+            console.error('게시글이 존재하지 않습니다.');
+            connection.release();
+            res.status(404).send('게시글을 찾을 수 없습니다.');
+            return;
+        }
+
+        // 댓글을 데이터베이스에 삽입하는 SQL 실행
+        const sql = 'INSERT INTO comments (post_id, author, content, created_at) VALUES (?, ?, ?, ?)';
+        const values = [postId, author, content, created_at];
+        await connection.execute(sql, values);
+        console.log('삽입될 데이터:', values); // 삽입 전 데이터를 로깅합니다.
+
+        // 연결 풀에 연결 반환
         connection.release();
 
-        console.log('댓글이 성공적으로 저장되었습니다.');
-        res.status(201).send('댓글이 성공적으로 저장되었습니다.');
+        console.log('새로운 댓글이 성공적으로 추가되었습니다.');
+        res.status(200).send('댓글이 성공적으로 저장되었습니다.');
     } catch (error) {
         console.error('댓글 저장 실패:', error);
         res.status(500).send('댓글 저장 실패');
     }
 });
 
-// 게시글 ID에 따른 댓글 정보를 가져오는 엔드포인트 추가
-app.get('/api/posts/:post_id/comments', async (req, res) => {
-    const postId = req.params.post_id;
+// 댓글 가져오는 엔드포인트
+app.get('/api/posts/:id/comments', async (req, res) => {
+    const postId = req.params.id;
 
     try {
         const connection = await pool.getConnection();
-        const [rows] = await connection.query('SELECT * FROM comments WHERE post_id = ?', [postId]);
-        connection.release();
 
-        console.log('댓글 정보를 성공적으로 가져왔습니다.', rows);
-        res.status(200).json(rows);
+        const [rows] = await connection.execute('SELECT * FROM posts WHERE id = ?', [postId]);
+        if (rows.length === 0) {
+            console.error('게시글이 존재하지 않습니다.');
+            connection.release();
+            res.status(404).send('게시글을 찾을 수 없습니다.');
+            return;
+        }
+
+        const [comments] = await connection.execute('SELECT * FROM comments WHERE post_id = ?', [postId]);
+        connection.release();
+        console.log('게시물의 댓글을 성공적으로 가져왔습니다.');
+        res.status(200).json(comments);
     } catch (error) {
-        console.error('댓글 정보 가져오기 실패:', error);
-        res.status(500).send('댓글 정보 가져오기 실패');
+        console.error('댓글 가져오기 실패:', error);
+        res.status(500).send('댓글 가져오기 실패');
+    }
+});
+
+// 댓글 삭제 엔드포인트 추가
+app.delete('/api/posts/:postId/comments/:commentId', async (req, res) => {
+    const postId = req.params.postId;
+    const commentId = req.params.commentId;
+
+    try {
+        const connection = await pool.getConnection();
+        const [rows] = await connection.execute('SELECT * FROM comments WHERE comment_id = ? AND post_id = ?', [commentId, postId]);
+        
+        if (rows.length === 0) {
+            console.error('댓글이 존재하지 않습니다.');
+            connection.release();
+            res.status(404).send('댓글을 찾을 수 없습니다.');
+            return;
+        }
+
+        await connection.execute('DELETE FROM comments WHERE comment_id = ? AND post_id = ?', [commentId, postId]);
+        connection.release();
+        console.log('댓글이 성공적으로 삭제되었습니다.');
+        res.status(200).send('댓글이 성공적으로 삭제되었습니다.');
+    } catch (error) {
+        console.error('댓글 삭제 실패:', error);
+        res.status(500).send('댓글 삭제 실패');
+   }
+});
+
+// 뉴스 API 프록시 엔드포인트
+app.get('/api/news', async (req, res) => {
+    try {
+        const category = req.query.category || 'all';
+        const query = category === 'all' ? '' : `&category=${category}`;
+        console.log(`Fetching news from newsapi.org for category: ${category}`);
+        const response = await axios.get(`https://newsapi.org/v2/top-headlines?country=jp${query}&apiKey=db05eddf2a4b43c2b3378b2dbaa7eeef`);
+        console.log('News fetched from newsapi.org successfully:', response.data);
+        res.json(response.data);
+    } catch (error) {
+        console.error('뉴스 API 요청 실패:', error);
+        res.status(500).send('뉴스 데이터를 가져오는 데 실패했습니다.');
     }
 });
 
