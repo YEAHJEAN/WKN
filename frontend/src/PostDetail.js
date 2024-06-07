@@ -17,10 +17,10 @@ const PostDetail = () => {
   const [newComment, setNewComment] = useState('');
   const [comments, setComments] = useState([]);
   const [showEditDeleteButtons, setShowEditDeleteButtons] = useState(false);
-  const [imageUrl, setImageUrl] = useState(""); // 이미지 URL 상태 추가
+  const [imageUrl, setImageUrl] = useState("");
 
   useEffect(() => {
-    const storedImageUrl = sessionStorage.getItem('imageUrl'); // 세션 스토리지에서 이미지 URL 가져오기
+    const storedImageUrl = sessionStorage.getItem('imageUrl');
     if (storedImageUrl) {
       setImageUrl(storedImageUrl);
     }
@@ -54,7 +54,12 @@ const PostDetail = () => {
   const fetchComments = useCallback(async () => {
     try {
       const response = await axios.get(`/api/posts/${id}/comments`);
-      setComments(response.data);
+      if (Array.isArray(response.data)) {
+        setComments(response.data);
+      } else {
+        setComments([]); // 데이터가 배열이 아닌 경우 빈 배열로 설정
+        console.error('댓글 데이터가 배열이 아닙니다:', response.data);
+      }
     } catch (error) {
       console.error('댓글을 불러오는 중 오류 발생:', error);
     }
@@ -64,7 +69,12 @@ const PostDetail = () => {
     const fetchPost = async () => {
       try {
         const response = await axios.get(`/api/posts/${id}`);
-        setPost(response.data);
+        if (response.data && typeof response.data === 'object') {
+          setPost(response.data);
+        } else {
+          setPost(null); // 데이터가 올바른 형식이 아닌 경우 null로 설정
+          console.error('게시글 데이터가 올바르지 않습니다:', response.data);
+        }
         setLoading(false);
       } catch (error) {
         console.error('게시글을 불러오는 중 오류 발생:', error);
@@ -207,7 +217,7 @@ const PostDetail = () => {
             {/* 댓글 목록은 댓글 작성 폼 아래에 표시되며 스크롤 가능합니다. */}
             <div className="comments-scroll" style={{ maxHeight: '150px', overflowY: 'auto' }}>
               <ul>
-                {comments.map((comment, index) => (
+                {Array.isArray(comments) && comments.map((comment) => (
                   <li key={comment.comment_id} className="comment-item">
                     <p>작성자: {comment.author}</p>
                     <p>{comment.content}</p>
