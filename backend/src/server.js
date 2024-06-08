@@ -207,6 +207,9 @@ app.post('/api/withdraw', async (req, res) => {
     }
 });
 
+// 정적 파일 서빙을 위한 설정 (이미지 접근 가능하도록)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // 게시글 저장 엔드포인트
 app.post('/api/posts', upload.single('image'), async (req, res) => {
     const { title, content, category, author } = req.body;
@@ -239,9 +242,6 @@ app.post('/api/posts', upload.single('image'), async (req, res) => {
         res.status(500).send('게시글 저장 실패');
     }
 });
-
-// 정적 파일 서빙을 위한 설정 (이미지 접근 가능하도록)
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // 홈으로 게시글 정보를 가져오는 엔드포인트 수정
 app.get('/api/posts', async (req, res) => {
