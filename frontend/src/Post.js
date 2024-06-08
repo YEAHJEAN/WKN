@@ -57,15 +57,15 @@ function Post() {
 
     try {
       // 기본 게시글 데이터
-      const newPost = { title, content, category, author: email };
       const formData = new FormData();
       formData.append('title', title);
       formData.append('content', content);
       formData.append('category', category);
       formData.append('author', email);
 
-      for (const key in newPost) {
-        formData.append(key, newPost[key]);
+      // formData 항목 로그 출력
+      for (let [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
       }
 
       // 이미지 파일 추가
