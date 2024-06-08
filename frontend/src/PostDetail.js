@@ -101,7 +101,6 @@ const PostDetail = () => {
       await axios.put(`/api/posts/${id}`, {
         title: editedTitle,
         content: editedContent,
-        author: post.author,
       });
 
       const response = await axios.get(`/api/posts/${id}`);

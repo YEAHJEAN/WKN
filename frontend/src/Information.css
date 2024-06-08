@@ -1,73 +1,65 @@
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.clock {
-    width: 200px;
-    height: 80px;
-    background-color: white;
+.fukuoka-embassy-info {
+    width: 700px;
+    height: 450px;
+    padding: 20px;
+    background-color: none;
     border: 1px solid #ccc;
     border-radius: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 30px;
-    margin-top: 20px;
+    position: absolute; /* 부모 요소에 대한 위치 지정 */
+    top: calc(50% + 60px); /* 부모 요소의 상단 위치를 화면 세로 중앙으로 이동하고 100px 아래로 이동 */
+    left: 50%; /* 부모 요소의 좌측 위치를 화면 가로 중앙으로 이동 */
+    transform: translate(-50%, -50%); /* 부모 요소를 수평 및 수직으로 정확히 가운데로 이동 */
 }
-
-.exchange-calculator {
-    margin-top: 10px;
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    max-width: 400px; /* 가로 길이 조정 */
-}
-
-.exchange-calculator h2 {
-    margin-bottom: 20px;
-    font-size: 16px;
-}
-
-.exchange-calculator div {
-    margin-bottom: 10px;
-}
-
-.exchange-calculator label {
-    display: block;
+  
+  .fukuoka-embassy-info h2 {
+    text-align: center; /* 가운데 정렬 */
+    margin-bottom: 40px;
+  }
+  
+  .fukuoka-embassy-info p {
     margin-bottom: 5px;
-    font-size: 14px;
-}
+  }
+  
+  .fukuoka-embassy-info a {
+    color: black; /* 링크 색상 변경 */
+    text-decoration: none; /* 밑줄 제거 */
+    font-weight: bold; /* 글씨 두껍게 */
+  }  
+  
+  .fukuoka-embassy-info a:hover {
+    text-decoration: underline; /* 마우스 오버 시 밑줄 추가 */
+  }
 
-.exchange-calculator select,
-.exchange-calculator input[type="number"] {
-    padding: 6px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    font-size: 14px;
-}
-
-.exchange-calculator button {
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.exchange-calculator button:hover {
-    background-color: #0056b3;
-}
-
-.exchange-calculator div.result {
-    margin-top: 8px;
-}
-
-.exchange-calculator span {
-    font-size: 14px;
-    font-weight: bold;
-}
+  .address-icon, .homepage-icon, .phone-icon, .email-icon {
+    width: 25px; /* 아이콘의 너비 */
+    height: 25px; /* 아이콘의 높이 */
+    margin-top: -5px; /* 아이콘을 위로 이동 */
+    margin-right: 10px; /* 아이콘과 텍스트 사이의 간격 */
+    vertical-align: middle; /* 텍스트와 아이콘의 세로 정렬을 맞춤 */
+  }
+  
+  .input-container {
+    display: flex; /* 플렉스 박스로 설정 */
+    align-items: center; /* 수직 가운데 정렬 */
+    margin-bottom: 15px; /* 아래 여백 */
+  }
+  
+  .input-container input[type="number"],
+  .input-container select {
+    flex: 1; /* 자동 크기 설정 */
+    height: 35px; /* 높이 설정 */
+    padding: 5px; /* 안쪽 여백 */
+    border: 1px solid #ced4da; /* 테두리 설정 */
+    border-radius: 5px; /* 테두리 둥글게 */
+  }
+  
+  .input-container select {
+    margin-left: 10px; /* 왼쪽 여백 */
+  }
+  
+  .result {
+    font-size: 18px; /* 글자 크기 */
+    font-weight: bold; /* 글자 굵기 */
+    text-align: center; /* 가운데 정렬 */
+    margin-bottom: 20px; /* 아래 여백 */
+  }

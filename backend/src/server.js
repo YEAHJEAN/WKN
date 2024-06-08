@@ -401,7 +401,7 @@ app.delete('/api/posts/:postId/comments/:commentId', async (req, res) => {
 
     try {
         const connection = await pool.getConnection();
-        const [rows] = await connection.execute('SELECT * FROM comments WHERE comment_id = ? AND post_id = ?', [commentId, postId]);
+        const [rows] = await connection.execute('SELECT * FROM comments WHERE id = ? AND post_id = ?', [commentId, postId]);
         
         if (rows.length === 0) {
             console.error('댓글이 존재하지 않습니다.');
@@ -410,7 +410,7 @@ app.delete('/api/posts/:postId/comments/:commentId', async (req, res) => {
             return;
         }
 
-        await connection.execute('DELETE FROM comments WHERE comment_id = ? AND post_id = ?', [commentId, postId]);
+        await connection.execute('DELETE FROM comments WHERE id = ? AND post_id = ?', [commentId, postId]);
         connection.release();
         console.log('댓글이 성공적으로 삭제되었습니다.');
         res.status(200).send('댓글이 성공적으로 삭제되었습니다.');
@@ -434,15 +434,6 @@ app.get('/api/news', async (req, res) => {
         res.status(500).send('뉴스 데이터를 가져오는 데 실패했습니다.');
     }
 });
-
-app.get('/api/exchange-rate', async (req, res) => {  // URL 수정
-    try {
-      const rates = await getExchangeRate();
-      res.json(rates);
-    } catch (error) {
-      res.status(500).json({ error: 'Failed to fetch exchange rates' });
-    }
-  });
 
 // 정적 파일 제공 설정 (프론트엔드 빌드 파일)
 app.use(express.static(path.join(__dirname, '../../frontend/build')));

@@ -1,120 +1,82 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import './Information.css';
 
 function Information() {
-    const navigate = useNavigate();
-    const [fukuokaTime, setFukuokaTime] = useState('');
-    const [exchangeRates, setExchangeRates] = useState({});
-    const [selectedCurrency, setSelectedCurrency] = useState('');
-    const [amount, setAmount] = useState(0);
-    const [convertedAmount, setConvertedAmount] = useState(0);
-    const [senderCountry, setSenderCountry] = useState('');
-    const [receiverCountry, setReceiverCountry] = useState('');
+  const navigate = useNavigate();
+  const [amount, setAmount] = useState(1); // 변환할 금액
+  const [fromCurrency, setFromCurrency] = useState('KRW'); // 변환 전 통화
+  const [toCurrency, setToCurrency] = useState('JPY'); // 변환 후 통화
+  const [exchangeRate, setExchangeRate] = useState(); // 환율
+  const [convertedAmount, setConvertedAmount] = useState(); // 변환된 금액
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            const fukuokaDate = new Date().toLocaleTimeString('en-US', {
-                timeZone: 'Asia/Tokyo',
-                hour12: true,
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-            setFukuokaTime(fukuokaDate);
-        }, 1000);
+  useEffect(() => {
+    fetch(`https://api.exchangerate-api.com/v4/latest/${fromCurrency}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setExchangeRate(data.rates[toCurrency]);
+      });
+  }, [fromCurrency, toCurrency]);
 
-        return () => clearInterval(interval);
-    }, []);
+  // 변환된 금액 계산
+  useEffect(() => {
+    if (exchangeRate) {
+      setConvertedAmount((amount * exchangeRate).toFixed(2));
+    }
+  }, [exchangeRate, amount]);
 
-    useEffect(() => {
-        axios.get('/api/exchange-rate')  // 환율 정보 가져오기
-            .then(response => {
-                setExchangeRates(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching exchange rates:', error);
-            });
-    }, []);
+  // 통화 변경 핸들러
+  const handleCurrencyChange = (e, type) => {
+    const currency = e.target.value;
+    if (type === 'from') {
+      setFromCurrency(currency);
+    } else {
+      setToCurrency(currency);
+    }
+  };
 
-    const handleCurrencyChange = (event) => {
-        setSelectedCurrency(event.target.value);
-    };
+  const handleClick = () => {
+    navigate('/home');
+  };
 
-    const handleAmountChange = (event) => {
-        setAmount(parseFloat(event.target.value));
-    };
-
-    const handleSenderCountryChange = (event) => {
-        setSenderCountry(event.target.value);
-    };
-
-    const handleReceiverCountryChange = (event) => {
-        setReceiverCountry(event.target.value);
-    };
-
-    const handleConvert = () => {
-        if (selectedCurrency && exchangeRates[selectedCurrency]) {
-            const rate = exchangeRates[selectedCurrency].buy;
-            setConvertedAmount(amount * rate);
-        }
-    };
-
-    const handleClick = () => {
-        navigate('/home');
-    };
-
-    return (
-        <div className="container">
-            <button onClick={handleClick} style={{ cursor: 'pointer', border: 'none', background: 'none', width: '300px', display: 'block', margin: '0 auto', outline: 'none' }}>
-                <img src="Home.jpg" alt="Go to Home" style={{ width: '250px', height: '120px' }} />
-            </button>
-            <div className="clock">{fukuokaTime}</div>
-            <div className="exchange-calculator">
-                <h2>환율 계산기</h2>
-                <div>
-                    <label>송금 국가:</label>
-                    <select value={senderCountry} onChange={handleSenderCountryChange}>
-                        <option value="">송금 국가를 선택하세요</option>
-                        <option value="Korea">대한민국 (KRW)</option>
-                        <option value="Japan">일본 (JPY)</option>
-                        <option value="China">중국 (CNY)</option>
-                        <option value="Europe">유럽 (EUR)</option>
-                    </select>
-                </div>
-                <div>
-                    <label>수취 국가:</label>
-                    <select value={receiverCountry} onChange={handleReceiverCountryChange}>
-                        <option value="">수취 국가를 선택하세요</option>
-                        <option value="Korea">대한민국 (KRW)</option>
-                        <option value="Japan">일본 (JPY)</option>
-                        <option value="China">중국 (CNY)</option>
-                        <option value="Europe">유럽 (EUR)</option>
-                    </select>
-                </div>
-                <div>
-                    <label>환율 선택:</label>
-                    <select value={selectedCurrency} onChange={handleCurrencyChange}>
-                        <option value="">환율을 선택하세요</option>
-                        {Object.keys(exchangeRates).map(currency => (
-                            <option key={currency} value={currency}>{currency}</option>
-                        ))}
-                    </select>
-                </div>
-                <div>
-                    <label>송금 금액:</label>
-                    <input type="number" value={amount} onChange={handleAmountChange} />
-                </div>
-                <button onClick={handleConvert}>변환</button>
-                {convertedAmount > 0 && (
-                    <div>
-                        <label>수취 국가로 변환된 금액:</label>
-                        <span>{convertedAmount} {selectedCurrency}</span>
-                    </div>
-                )}
-            </div>
-        </div>
-    );
+  return (
+    <div>
+      <button onClick={handleClick} style={{ cursor: 'pointer', border: 'none', background: 'none', width: '300px', display: 'block', margin: '0 auto', outline: 'none' }}>
+        <img src="/Home.jpg" alt="Go to Home" style={{ width: '250px', height: '120px' }} />
+      </button>
+      <div className="container">
+  <div className="fukuoka-embassy-info">
+    {/* Fukuoka Embassy Information */}
+    <h2>Fukuoka Embassy Information</h2>
+    <p><img src="/Address.png" className="address-icon"/><a href="https://www.google.com/maps/search/?api=1&query=후쿠오카 대사관 주소">1-1-3 Jigyohama Chuo-ku Fukuoka-shi, Fukuoka-ken, Japan 810-0065</a></p>
+    <p><img src="/HomePage.png" className="homepage-icon"/><a href="https://overseas.mofa.go.kr/jp-fukuoka-ko/index.do">주후쿠오카 대한민국 총영사관</a></p>
+    <p><img src="/Phone.png" className="phone-icon"/><a href="tel:080-8588-2806">080-8588-2806</a></p>
+    <p><img src="/Email.png" className="email-icon"/><a href="mailto:fukuoka@mofa.go.kr">fukuoka@mofa.go.kr</a></p>
+    {/* Currency Converter */}
+    <h2>Currency Converter</h2>
+    <div className="input-container">
+      <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} />
+      <select value={fromCurrency} onChange={(e) => handleCurrencyChange(e, 'from')} >
+        <option value="KRW">KRW</option>
+        <option value="JPY">JPY</option>
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="CNY">CNY</option>
+      </select>&nbsp; to&nbsp;<select value={toCurrency} onChange={(e) => handleCurrencyChange(e, 'to')} >
+        <option value="KRW">KRW</option>
+        <option value="JPY">JPY</option>
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="CNY">CNY</option>
+      </select>
+    </div>
+    <div className="result">
+      {amount} {fromCurrency} is equal to {convertedAmount} {toCurrency}
+      </div>
+      </div>
+      </div>
+      </div>
+  );
 }
 
 export default Information;
