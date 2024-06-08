@@ -217,7 +217,7 @@ const handleCommentDelete = async (commentId) => {
                     <p>작성자: {comment.author}</p>
                     <p>{comment.content}</p>
                     {comment.author === email && (
-                      <button className="comment-delete-button" onClick={() => handleCommentDelete(comment.comment_id)}>삭제</button>
+                      <button className="comment-delete-button" onClick={() => handleCommentDelete(comment.id)}>삭제</button>
                     )}
                   </li>                                             
                 ))}
