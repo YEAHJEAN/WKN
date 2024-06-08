@@ -208,8 +208,13 @@ app.post('/api/withdraw', async (req, res) => {
 });
 
 // 게시글 저장 엔드포인트
-app.post('/api/posts', async (req, res) => {
+app.post('/api/posts', upload.single('image'), async (req, res) => {
     const { title, content, category, author } = req.body;
+    let imageUrl = null;
+    
+    if (req.file) {
+        imageUrl = `/uploads/${req.file.filename}`;
+    }
 
     try {
         const connection = await pool.getConnection();

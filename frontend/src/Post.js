@@ -56,15 +56,21 @@ function Post() {
     }
 
     try {
-      const newPost = {
-        title,
-        content,
-        category,
-        author: email
-      };
-      console.log('전송하는 데이터:', newPost);
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('content', content);
+      formData.append('category', category);
+      formData.append('author', email);
 
-      const response = await axios.post('/api/posts', newPost);
+      if (image) {
+          formData.append('image', image);
+      }
+
+      const response = await axios.post('/api/posts', formData, {
+          headers: {
+              'Content-Type': 'multipart/form-data'
+          }
+      });
 
       if (response.status === 200 || response.status === 201) {
         console.log('게시되었습니다.');
