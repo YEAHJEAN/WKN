@@ -1,87 +1,93 @@
 .chat-container {
-    display: flex;
-    flex-direction: column;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    overflow-y: auto;
-  }
-  
-  h1 {
-    margin-top: 0;
-  }
-  
-  hr {
-    border: none;
-    border-top: 1px solid #ccc;
-    margin: 10px 0;
-  }
-  
-  .user-joined {
-    margin-bottom: 10px;
-  }
-  
-  .message {
-    margin-bottom: 10px;
-  }
-  
-  .sent-message,
-  .received-message {
-    background-color: #f0f0f0;
-    align-self: flex-end;
-    max-width: 70%;
-  }
-  
-  .received-message {
-    align-self: flex-start;
-  }
-  
-  .message-bubble {
-    padding: 8px 12px;
-    border-radius: 10px;
-  }
-  
-  .username {
-    font-weight: bold;
-  }
-  
-  .timestamp {
-    font-size: 0.8em;
-    color: #999;
-  }
-  
-  .message-input-container {
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 30%;
-    padding: 20px; /* 내부 여백 설정 */
-    display: flex;
-    align-items: center;
-  }
-  
-  .message-input {
-    flex: 1;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  
-  .send-button {
-    width: 80px;
-    margin-left: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: #fff;
-    cursor: pointer;
-  }
-  
-  .send-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .message-timestamp {
-    margin-left: 10px;
-  }
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  overflow-y: auto;
+  position: relative;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 10px 0;
+  margin-top: -25px;
+}
+
+.user-joined {
+  margin-bottom: 10px;
+}
+
+.message {
+  margin-bottom: 15px;
+}
+
+.sent-message,
+.received-message {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  max-width: 100%;
+}
+
+.received-message {
+  justify-content: flex-start;
+}
+
+.message-bubble {
+  padding: 10px 10px;
+  border-radius: 10px;
+  background-color: #f0f0f0;
+}
+
+.username {
+  font-weight: bold;
+}
+
+.timestamp {
+  font-size: 0.8em;
+  color: #999;
+  margin-left: 5px;
+}
+
+.message-input-container {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40%;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+}
+
+.message-input {
+  flex: 1;
+  padding: 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.send-button {
+  width: 80px;
+  margin-left: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #F2CB61;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 0px; /* 위로 올리는 스타일 추가 */
+}
+
+.send-button:hover {
+  background-color: #CCA63D;
+}
+
+.bottom-hr {
+  position: absolute; /* 절대 위치로 설정하여 부모 컨테이너에 고정됩니다. */
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
