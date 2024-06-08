@@ -189,7 +189,7 @@ const PostDetail = () => {
           <p>카테고리: {post.category} | 작성자: {post.author} | 작성일: {new Date(post.created_at).toLocaleDateString('ko-KR')}</p>
           <hr />
           {/* 이미지 보여주기 */}
-          {post.imageUrl && <img src={`http://localhost:3001${post.imageUrl}`} style={{ maxWidth: '100%', maxHeight: '230px', marginBottom: '10px' }} onError={() => console.log('이미지를 불러오는 중 오류 발생')} />}
+          {post.imageUrl && <img src={`http://43.202.124.253:3001${post.imageUrl}`} style={{ maxWidth: '100%', maxHeight: '230px', marginBottom: '10px' }} onError={() => console.log('이미지를 불러오는 중 오류 발생')} />}
           <div className="content-wrapper">
             <p>{post.content}</p>
             <hr />
