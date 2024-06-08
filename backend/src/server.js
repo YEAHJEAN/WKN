@@ -184,7 +184,7 @@ app.post('/api/logout', (req, res) => {
 });
 
 // 비밀번호 확인 및 회원 탈퇴 엔드포인트
-app.post('/confirmPasswordAndWithdraw', async (req, res) => {
+app.post('/api/confirmPasswordAndWithdraw', async (req, res) => {
     const { email, password } = req.body;
 
     try {
