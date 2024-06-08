@@ -154,17 +154,17 @@ const PostDetail = () => {
     }
   };
 
-  // 댓글 삭제 핸들러 함수 추가
-  const handleCommentDelete = async (commentId) => {
-    try {
-      await axios.delete(`/api/posts/${id}/comments`);
+  // 댓글 삭제 핸들러 함수 수정
+const handleCommentDelete = async (commentId) => {
+  try {
+      await axios.delete(`/api/posts/${id}/comments/${commentId}`);
       alert('댓글이 삭제되었습니다.');
       fetchComments();
-    } catch (error) {
+  } catch (error) {
       console.error('댓글 삭제 중 오류 발생:', error);
       setError('댓글 삭제 중 오류가 발생했습니다.');
-    }
-  };
+  }
+};
 
   const handleImageClick = () => {
     setShowEditDeleteButtons(!showEditDeleteButtons);

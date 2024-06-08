@@ -421,15 +421,14 @@ app.get('/api/posts/:id/comments', async (req, res) => {
     }
 });
 
-// 댓글 삭제 엔드포인트 추가
-app.delete('/api/posts/:id/comments', async (req, res) => {
-    const postId = req.params.postId;
-    const commentId = req.params.commentId;
+// 댓글 삭제 엔드포인트
+app.delete('/api/posts/:postId/comments/:commentId', async (req, res) => {
+    const { postId, commentId } = req.params;
 
     try {
         const connection = await pool.getConnection();
         const [rows] = await connection.execute('SELECT * FROM comments WHERE id = ? AND post_id = ?', [commentId, postId]);
-        
+
         if (rows.length === 0) {
             console.error('댓글이 존재하지 않습니다.');
             connection.release();
@@ -444,7 +443,7 @@ app.delete('/api/posts/:id/comments', async (req, res) => {
     } catch (error) {
         console.error('댓글 삭제 실패:', error);
         res.status(500).send('댓글 삭제 실패');
-   }
+    }
 });
 
 // 뉴스 API 프록시 엔드포인트
