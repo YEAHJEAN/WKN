@@ -182,28 +182,47 @@ app.post('/api/logout', (req, res) => {
     res.status(200).send('로그아웃 성공');
 });
 
-// 회원탈퇴 엔드포인트
-app.post('/api/withdraw', async (req, res) => {
-    const { email } = req.body;
+// 비밀번호 확인 및 회원 탈퇴 엔드포인트
+app.post('/confirmPasswordAndWithdraw', async (req, res) => {
+    const { email, password } = req.body;
 
     try {
         const connection = await pool.getConnection();
-        await connection.query('DELETE FROM comments WHERE author = ?', [email]);
-        await connection.query('DELETE FROM comments WHERE post_id IN (SELECT id FROM posts WHERE author = ?)', [email]);
-        await connection.query('DELETE FROM posts WHERE author = ?', [email]);
-        const [result] = await connection.query('DELETE FROM users WHERE email = ?', [email]);
-        connection.release();
+        const [users] = await connection.query('SELECT * FROM users WHERE email = ?', [email]);
 
-        if (result.affectedRows > 0) {
-            console.log('회원 탈퇴 성공:', email);
-            res.status(200).json({ success: true });
+        if (users.length > 0) {
+            const user = users[0];
+            const passwordMatch = await bcrypt.compare(password, user.password);
+
+            if (passwordMatch) {
+                // 비밀번호가 맞으면 회원 탈퇴 처리
+                await connection.query('DELETE FROM comments WHERE author = ?', [email]);
+                await connection.query('DELETE FROM comments WHERE post_id IN (SELECT id FROM posts WHERE author = ?)', [email]);
+                await connection.query('DELETE FROM posts WHERE author = ?', [email]);
+                const [result] = await connection.query('DELETE FROM users WHERE email = ?', [email]);
+
+                connection.release();
+
+                if (result.affectedRows > 0) {
+                    console.log('회원 탈퇴 성공:', email);
+                    res.status(200).json({ success: true });
+                } else {
+                    console.log('회원 탈퇴 실패: 해당 이메일이 존재하지 않습니다.');
+                    res.status(404).json({ success: false, message: '회원 탈퇴 실패: 해당 이메일이 존재하지 않습니다.' });
+                }
+            } else {
+                console.log('비밀번호 불일치');
+                connection.release();
+                res.status(401).json({ success: false, message: '비밀번호가 일치하지 않습니다.' });
+            }
         } else {
             console.log('회원 탈퇴 실패: 해당 이메일이 존재하지 않습니다.');
-            res.status(404).send('회원 탈퇴 실패: 해당 이메일이 존재하지 않습니다.');
+            connection.release();
+            res.status(404).json({ success: false, message: '회원 탈퇴 실패: 해당 이메일이 존재하지 않습니다.' });
         }
     } catch (err) {
         console.error('회원 탈퇴 오류:', err);
-        res.status(500).send('회원 탈퇴 오류가 발생했습니다.');
+        res.status(500).json({ success: false, message: '회원 탈퇴 오류가 발생했습니다.' });
     }
 });
 
@@ -213,7 +232,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // 게시글 저장 엔드포인트
 app.post('/api/posts', upload.single('image'), async (req, res) => {
     const { title, content, category, author } = req.body;
-    let imageUrl = null;
+    const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
     
     if (req.file) {
         imageUrl = `/uploads/${req.file.filename}`;
@@ -236,6 +255,7 @@ app.post('/api/posts', upload.single('image'), async (req, res) => {
 
         connection.release();
         console.log('게시글이 성공적으로 저장되었습니다.');
+        console.log('이미지 URL:', imageUrl); // 이미지 URL 로깅
         res.status(201).send('게시글이 성공적으로 저장되었습니다.');
     } catch (error) {
         console.error('게시글 저장 실패:', error);
@@ -243,7 +263,7 @@ app.post('/api/posts', upload.single('image'), async (req, res) => {
     }
 });
 
-// 홈으로 게시글 정보를 가져오는 엔드포인트 수정
+// 게시글 목록 조회 엔드포인트
 app.get('/api/posts', async (req, res) => {
     try {
         const connection = await pool.getConnection();
@@ -258,16 +278,18 @@ app.get('/api/posts', async (req, res) => {
     }
 });
 
-// 특정 ID를 가진 게시글 정보를 가져오는 엔드포인트
+// 특정 게시글 정보 조회 엔드포인트
 app.get('/api/posts/:id', async (req, res) => {
     const postId = req.params.id;
+
     try {
         const connection = await pool.getConnection();
-        const [rows] = await connection.query('SELECT title, author, content, category, created_at FROM posts WHERE id = ?', [postId]);
+        const [rows] = await connection.query('SELECT title, author, content, category, imageUrl, created_at FROM posts WHERE id = ?', [postId]);
         connection.release();
 
         if (rows.length > 0) {
             console.log('게시글 정보:', rows[0]);
+            console.log('이미지 URL:', rows[0].imageUrl); // 이미지 URL 로깅
             res.status(200).json(rows[0]);
         } else {
             res.status(404).send('게시글을 찾을 수 없습니다.');

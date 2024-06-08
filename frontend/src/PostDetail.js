@@ -60,6 +60,7 @@ const PostDetail = () => {
         const response = await axios.get(`/api/posts/${id}`);
         setPost(response.data);
         setImageUrl(response.data.imageUrl); // 이미지 URL 설정
+        console.log('이미지 URL:', response.data.imageUrl); // 콘솔 로그 추가
         setLoading(false); // 이미지 URL 설정 후에 로딩 상태 변경
       } catch (error) {
         console.error('게시글을 불러오는 중 오류 발생:', error);
@@ -186,9 +187,9 @@ const PostDetail = () => {
         <div className="postdetail-box">
           <h1>{post.title}</h1>
           <p>카테고리: {post.category} | 작성자: {post.author} | 작성일: {new Date(post.created_at).toLocaleDateString('ko-KR')}</p>
-          {/* 이미지 보여주기 */}
-          {post.imageUrl && <img src={post.imageUrl} alt="Post" style={{ maxWidth: '100%', maxHeight: '300px', marginBottom: '10px' }} />}
           <hr />
+          {/* 이미지 보여주기 */}
+          {post.imageUrl && <img src={`http://localhost:3001${post.imageUrl}`} style={{ maxWidth: '100%', maxHeight: '230px', marginBottom: '10px' }} onError={() => console.log('이미지를 불러오는 중 오류 발생')} />}
           <div className="content-wrapper">
             <p>{post.content}</p>
             <hr />
@@ -200,28 +201,25 @@ const PostDetail = () => {
             {showEditDeleteButtons && email === post.author && (
               <div className="button-container">
                 <button className="edit-button" onClick={handleEdit}>수정</button>
-                <div className="vertical-separator"></div> {/* 세로 경계선 추가 */}
+                <div className="vertical-separator"></div>
                 <button className="delete-button" onClick={handleDelete}>삭제</button>
               </div>
             )}
           </span>
-          {/* 댓글 작성 폼은 게시글 상자 안에 있습니다. */}
           <div className="comments-section">
             <h2>댓글</h2>
             <textarea rows="4" cols="50" value={newComment} onChange={(e) => setNewComment(e.target.value)} placeholder="댓글을 입력하세요" />
             <button className="comment-button" onClick={handleCommentSubmit}>작성</button>
-            {/* 댓글 목록은 댓글 작성 폼 아래에 표시되며 스크롤 가능합니다. */}
             <div className="comments-scroll" style={{ maxHeight: '150px', overflowY: 'auto' }}>
               <ul>
                 {comments.map((comment, index) => (
                   <li key={comment.comment_id} className={`comment-item ${showEditDeleteButtons ? 'with-buttons' : ''}`}>
-                  <p>작성자: {comment.author}</p>
-                  <p>{comment.content}</p>
-                  {/* 삭제 버튼 추가 */}
-                  {comment.author === email && (
-                    <button className="comment-delete-button" onClick={() => handleCommentDelete(comment.comment_id)}>삭제</button>
-                  )}
-                </li>                                             
+                    <p>작성자: {comment.author}</p>
+                    <p>{comment.content}</p>
+                    {comment.author === email && (
+                      <button className="comment-delete-button" onClick={() => handleCommentDelete(comment.comment_id)}>삭제</button>
+                    )}
+                  </li>                                             
                 ))}
               </ul>
             </div>

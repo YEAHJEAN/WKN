@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Mypage.css';
+import PasswordConfirmation from './PasswordConfirmation'; // PasswordConfirmation 컴포넌트를 가져옴
 
 function MyPage() {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
+  const [isWithdraw, setIsWithdraw] = useState(false); // 회원 탈퇴 확인 페이지 표시 여부
 
   useEffect(() => {
     const storedEmail = sessionStorage.getItem('email');
@@ -44,26 +46,21 @@ function MyPage() {
   };
 
   const handleWithdraw = () => {
-    const storedEmail = sessionStorage.getItem('email');
+    setIsWithdraw(true); // 회원 탈퇴 확인 페이지로 이동
+  };
 
-    axios.post('/api/withdraw', { email: storedEmail })
-      .then(response => {
-        if (response.status === 200) {
-          sessionStorage.removeItem('email');
-          console.log('세션에서 이메일 삭제:', storedEmail);
-          navigate('/login');
-        } else {
-          console.error('회원 탈퇴 실패');
-        }
-      })
-      .catch(error => {
-        console.error('회원 탈퇴 실패:', error);
-      });
+  const handleConfirmWithdraw = () => {
+    setIsWithdraw(false); // 회원 탈퇴 확인 후 원래 페이지로 돌아옴
+    navigate('/login'); // 로그인 페이지로 이동
   };
 
   const handleClick = () => {
     navigate('/home');
   };
+
+  if (isWithdraw) {
+    return <PasswordConfirmation onWithdraw={handleConfirmWithdraw} />; // PasswordConfirmation 컴포넌트를 표시
+  }
 
   return (
     <div>
