@@ -35,7 +35,7 @@ pool.getConnection().then(connection => {
 // multer 설정
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'uploads/');
+        cb(null, path.join(__dirname, '../../uploads')); // 경로 수정
     },
     filename: function (req, file, cb) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
@@ -227,13 +227,13 @@ app.post('/confirmPasswordAndWithdraw', async (req, res) => {
     }
 });
 
-// 정적 파일 서빙을 위한 설정 (이미지 접근 가능하도록)
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// 정적 파일 서빙 설정
+app.use('/uploads', express.static(path.join(__dirname, '../../uploads')));
 
-// 게시글 저장 엔드포인트
+// 게시글 작성 엔드포인트
 app.post('/api/posts', upload.single('image'), async (req, res) => {
     const { title, content, category, author } = req.body;
-    let imageUrl = req.file ? `/uploads/${req.file.filename}` : null; // let으로 변경하여 조건부 재정의 가능하도록 함
+    let imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
 
     try {
         console.log('Received request to create a post with the following details:');
@@ -260,10 +260,10 @@ app.post('/api/posts', upload.single('image'), async (req, res) => {
 
         connection.release();
         console.log('게시글이 성공적으로 저장되었습니다.');
-        console.log('이미지 URL:', imageUrl); // 이미지 URL 로깅
+        console.log('이미지 URL:', imageUrl);
         res.status(201).send('게시글이 성공적으로 저장되었습니다.');
     } catch (error) {
-        console.error('게시글 저장 실패:', error);
+        console.error('게시글 저장 실패:', error.message);
         res.status(500).send('게시글 저장 실패');
     }
 });
