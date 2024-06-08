@@ -85,7 +85,7 @@ function Post() {
         console.log('게시되었습니다.');
         setTitle('');
         setContent('');
-        setCategory(''); 
+        setCategory('');
         setImage(null);
         alert('게시되었습니다.');
         navigate('/home');

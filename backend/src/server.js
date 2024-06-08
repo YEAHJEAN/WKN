@@ -8,6 +8,7 @@ const jwt = require('jsonwebtoken');
 const http = require('http');
 const socketIo = require('socket.io');
 const path = require('path');
+const fs = require('fs');
 const axios = require('axios');
 
 const app = express();
@@ -31,6 +32,15 @@ pool.getConnection().then(connection => {
 }).catch(err => {
     console.error('MySQL 연결 실패:', err);
 });
+
+// `uploads` 폴더 확인 및 생성
+const uploadDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir);
+    console.log('`uploads` 폴더가 생성되었습니다.');
+} else {
+    console.log('`uploads` 폴더가 이미 존재합니다.');
+}
 
 // multer 설정
 const storage = multer.diskStorage({
@@ -232,11 +242,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // 게시글 저장 엔드포인트
 app.post('/api/posts', upload.single('image'), async (req, res) => {
     const { title, content, category, author } = req.body;
-    const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
-    
-    if (req.file) {
-        imageUrl = `/uploads/${req.file.filename}`;
-    }
+    let imageUrl = req.file ? `/uploads/${req.file.filename}` : null; // let으로 변경하여 조건부 재정의 가능하도록 함
 
     try {
         const connection = await pool.getConnection();
