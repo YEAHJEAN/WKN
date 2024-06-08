@@ -63,15 +63,15 @@ function Post() {
       formData.append('category', category);
       formData.append('author', email);
 
-      // formData 항목 로그 출력
-      for (let [key, value] of formData.entries()) {
-        console.log(`${key}: ${value}`);
-      }
-
       // 이미지 파일 추가
       if (image) {
           formData.append('image', image);
       }
+
+      // formData 확인용 로그 추가
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ', ' + pair[1]);
+    }
 
       console.log('전송하는 데이터:', formData);
 

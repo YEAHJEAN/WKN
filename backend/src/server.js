@@ -48,9 +48,10 @@ const storage = multer.diskStorage({
       cb(null, 'uploads/');
     },
     filename: function (req, file, cb) {
-      cb(null, Date.now() + path.extname(file.originalname)); // 파일명 중복 방지
-    },
-  });
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, uniqueSuffix + path.extname(file.originalname));
+    }
+});
   
 const upload = multer({ storage: storage });
 
@@ -245,6 +246,14 @@ app.post('/api/posts', upload.single('image'), async (req, res) => {
     let imageUrl = req.file ? `/uploads/${req.file.filename}` : null; // let으로 변경하여 조건부 재정의 가능하도록 함
 
     try {
+        console.log('Received request to create a post with the following details:');
+        console.log('Title:', title);
+        console.log('Content:', content);
+        console.log('Category:', category);
+        console.log('Author:', author);
+        console.log('Image URL:', imageUrl);
+        console.log('File details:', req.file);
+
         const connection = await pool.getConnection();
         const [user] = await connection.execute('SELECT * FROM users WHERE email = ?', [author]);
 
@@ -423,7 +432,7 @@ app.get('/api/posts/:id/comments', async (req, res) => {
 });
 
 // 댓글 삭제 엔드포인트 추가
-app.delete('/api/posts/:postId/comments/:commentId', async (req, res) => {
+app.delete('/api/posts/:id/comments', async (req, res) => {
     const postId = req.params.postId;
     const commentId = req.params.commentId;
 

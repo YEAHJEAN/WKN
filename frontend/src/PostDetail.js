@@ -157,7 +157,7 @@ const PostDetail = () => {
   // 댓글 삭제 핸들러 함수 추가
   const handleCommentDelete = async (commentId) => {
     try {
-      await axios.delete(`/api/posts/${id}/comments/${commentId}`);
+      await axios.delete(`/api/posts/${id}/comments`);
       alert('댓글이 삭제되었습니다.');
       fetchComments();
     } catch (error) {
