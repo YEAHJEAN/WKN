@@ -8,7 +8,6 @@ const jwt = require('jsonwebtoken');
 const http = require('http');
 const socketIo = require('socket.io');
 const path = require('path');
-const fs = require('fs');
 const axios = require('axios');
 
 const app = express();
@@ -32,15 +31,6 @@ pool.getConnection().then(connection => {
 }).catch(err => {
     console.error('MySQL 연결 실패:', err);
 });
-
-// `uploads` 폴더 확인 및 생성
-const uploadDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir);
-    console.log('`uploads` 폴더가 생성되었습니다.');
-} else {
-    console.log('`uploads` 폴더가 이미 존재합니다.');
-}
 
 // multer 설정
 const storage = multer.diskStorage({
