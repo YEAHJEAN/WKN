@@ -9,6 +9,7 @@ import News from './News';
 import Chatroom from './Chatroom';
 import Chat from './Chat';
 import ChatroomList from './ChatroomList';
+import Weather from './Weather';
 import Information from './Information';
 import Mypage from './Mypage';
 
@@ -25,6 +26,7 @@ const App = () => {
       <Route path="/chatroom" element={<Chatroom />} />
       <Route path="/chat/:chatroom/:username" element={<Chat />} />
       <Route path="/chatroomList" element={<ChatroomList />} />
+      <Route path="/weather" element={<Weather />} />
       <Route path="/information" element={<Information />} />
       <Route path="/mypage" element={<Mypage />} />
     </Routes>
