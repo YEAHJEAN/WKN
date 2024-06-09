@@ -213,7 +213,7 @@ const handleCommentDelete = async (commentId) => {
             <div className="comments-scroll" style={{ maxHeight: '150px', overflowY: 'auto' }}>
               <ul>
                 {comments.map((comment, index) => (
-                  <li key={comment.comment_id} className={`comment-item ${showEditDeleteButtons ? 'with-buttons' : ''}`}>
+                  <li key={comment.id} className={`comment-item ${showEditDeleteButtons ? 'with-buttons' : ''}`}>
                     <p>작성자: {comment.author}</p>
                     <p>{comment.content}</p>
                     {comment.author === email && (

@@ -9,18 +9,20 @@
 }
 
 .postdetail-box h1 {
-  margin-top: 0px; /* 제목 위의 여백을 10px로 설정합니다. */
+  margin-top: 0px;
   margin-bottom: 10px;
+  text-align: left;
 }
 
 .postdetail-box p {
   margin: 3px;
+  text-align: left;
 }
 
 .postdetail-box hr {
-  margin: 20px 0; /* 경계선 위아래 간격 설정 */
+  margin: 20px 0;
   border: none;
-  border-top: 1px solid #ccc; /* 경계선 스타일 지정 */
+  border-top: 1px solid #ccc;
 }
 
 .postdetail-box .toggle-button {
@@ -34,7 +36,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative; /* 위치 지정 */
+  position: relative;
   top: -197px;
 }
 
@@ -50,35 +52,35 @@
 .postdetail-box .button-container {
   display: flex;
   align-items: center;
-  justify-content: flex-end; /* 오른쪽 정렬 */
-  margin-top: -210px; /* 약간 위로 이동 */
+  justify-content: flex-end;
+  margin-top: -210px;
 }
 
 .postdetail-box .button-container .edit-button,
 .postdetail-box .button-container .delete-button {
-  width: auto; /* 자동으로 너비 조정 */
-  padding: 10px; /* 내부 여백 설정 */
-  margin: 3px; /* 버튼 사이 간격 조정 */
-  background-color: transparent; /* 배경색 투명하게 설정 */
-  color: black; /* 글자색 설정 */
+  width: auto;
+  padding: 10px;
+  margin: 3px;
+  background-color: transparent;
+  color: black;
 }
 
 .postdetail-box .vertical-separator {
   width: 1px;
   height: 30px;
   background-color: #ccc;
-  margin-top: -20px; /* 경계선을 위로 이동 */
-  margin-right: 10px; /* 오른쪽으로 이동 */
+  margin-top: -20px;
+  margin-right: 10px;
 }
 
 .content-wrapper {
-  margin-bottom: -140px; /* content 아래 여백 */
+  margin-bottom: -140px;
 }
 
 .content-wrapper hr {
-  margin-top: 160px; /* 경계선 위 여백 */
+  margin-top: 160px;
   border: none;
-  border-top: 1px solid #ccc; /* 경계선 스타일 지정 */
+  border-top: 1px solid #ccc;
 }
 
 .comments-section {
@@ -105,17 +107,17 @@
 
 .comments-section textarea {
   width: 85%;
-  height: 20px; /* 원하는 높이로 설정 */
+  height: 20px;
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  resize: none; /* 사용자가 텍스트 영역 크기를 조정할 수 없도록 설정 */
+  resize: none;
 }
 
 .comment-item {
   border-bottom: 1px solid #ccc;
-  padding-bottom: 10px; /* 아래쪽 여백 추가 */
+  padding-bottom: 25px;
 }
 
 .comment-item:last-child {
@@ -123,55 +125,55 @@
 }
 
 .comment-item p {
-  margin-bottom: 5px; /* 각 요소 사이의 여백 조절 */
+  margin-bottom: 5px;
 }
 
 .comments-section .comment-button {
   width: 70px;
-  height: 40px;
+  height: 43px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   background-color: #F2CB61;
   color: white;
-  text-align: center; /* 버튼 내의 텍스트를 가운데 정렬 */
-  line-height: 10px; /* 버튼의 높이와 일치하도록 텍스트의 줄 높이 조절 */
-  margin-right: 5px; /* 버튼을 약간 왼쪽으로 이동 */
-  margin-top: -55px; /* 버튼을 위로 이동 */
+  text-align: center;
+  line-height: 10px;
+  margin-right: 10px;
+  margin-top: -56px;
 }
 
 /* 수정 모드 입력 필드 스타일 - 입력 필드 */
 .edit-input {
-  width: 800px; /* 입력 필드 너비 설정 */
-  padding: 10px; /* 내부 여백 설정 */
-  margin-top: 70px; /* 입력 필드 상단 여백 설정 */
-  font-size: 16px; /* 글꼴 크기 설정 */
+  width: 800px;
+  padding: 10px;
+  margin-top: 70px;
+  font-size: 16px;
   margin-left: auto;
   margin-right: auto;
-  border: 1px solid #ccc; /* 테두리 설정 */ 
-  border-radius: 4px; /* 테두리 모서리 둥글게 만들기 */
-  box-sizing: border-box; /* 박스 크기 설정 */
-  display: block; /* 블록 요소로 설정 */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  display: block;
 }
 
 /* 수정 모드 입력 필드 스타일 - 텍스트 영역 */
 .edit-textarea {
-  width: 800px; /* 텍스트 영역 너비 설정 */
-  height: 350px; /* 텍스트 영역 높이 설정 */
-  padding: 10px; /* 내부 여백 설정 */
-  margin-top: 20px; /* 텍스트 영역 상단 여백 설정 */
-  font-size: 16px; /* 글꼴 크기 설정 */
+  width: 800px;
+  height: 350px;
+  padding: 10px;
+  margin-top: 20px;
+  font-size: 16px;
   margin-left: auto;
   margin-right: auto;
-  border: 1px solid #ccc; /* 테두리 설정 */ 
-  border-radius: 4px; /* 테두리 모서리 둥글게 만들기 */
-  box-sizing: border-box; /* 박스 크기 설정 */
-  display: block; /* 블록 요소로 설정 */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  display: block;
 }
 
 /* 포커스 시 테두리 색상 변경 */
 .edit-input:focus, .edit-textarea:focus {
-  border-color: #007bff;
+  border-color: black;
   outline: none;
 }
 
@@ -205,4 +207,28 @@
   cursor: pointer;
   background-color: #F2CB61;
   color: white;
+}
+
+/* 댓글 삭제 버튼*/
+.comment-delete-button {
+  width: 65px;
+  margin-top: -55px;
+  margin-left: 210px;
+  background-color: #F2CB61;
+  color: white;
+  border: none; 
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.comment-delete-button:hover {
+  background-color: #CCA63D;
+  color: #fff;
+}
+
+.comment-delete-button:active {
+  background-color: #CCA63D;
 }
