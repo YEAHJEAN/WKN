@@ -6,7 +6,7 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   position: absolute; /* 부모 요소에 대한 위치 지정 */
-  top: calc(50% + 60px); /* 부모 요소의 상단 위치를 화면 세로 중앙으로 이동하고 100px 아래로 이동 */
+  top: calc(50% + 70px); /* 부모 요소의 상단 위치를 화면 세로 중앙으로 이동하고 100px 아래로 이동 */
   left: 50%; /* 부모 요소의 좌측 위치를 화면 가로 중앙으로 이동 */
   transform: translate(-50%, -50%); /* 부모 요소를 수평 및 수직으로 정확히 가운데로 이동 */
 }
