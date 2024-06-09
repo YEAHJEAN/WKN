@@ -107,6 +107,63 @@ io.on('connection', async (socket) => {
     });
 });
 
+// 모든 채팅방 목록을 가져오는 엔드포인트
+app.get('/api/chatrooms', async (req, res) => {
+    const query = `
+      SELECT DISTINCT chatroom_id
+      FROM chat
+    `;
+  
+    try {
+        const connection = await pool.getConnection();
+        const [results] = await connection.query(query);
+        const chatrooms = results.map(row => row.chatroom_id);
+        res.json(chatrooms);
+        connection.release();
+    } catch (err) {
+        console.error('채팅방 목록 조회 오류:', err);
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// 특정 채팅방의 현재 채팅 중인 사용자 목록을 가져오는 엔드포인트
+app.get('/api/chatrooms/:chatroomId/users', async (req, res) => {
+    const { chatroomId } = req.params;
+
+    try {
+        const connection = await pool.getConnection();
+        const [rows] = await connection.query('SELECT DISTINCT username FROM chat WHERE chatroom_id = ?', [chatroomId]);
+        connection.release();
+        const users = rows.map(row => row.username);
+        res.json(users);
+    } catch (error) {
+        console.error('채팅방 사용자 조회 오류:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// 유저가 참여 중인 채팅방 목록을 가져오는 엔드포인트
+app.get('/api/users/:username/chatrooms', async (req, res) => {
+    const username = req.params.username;
+
+    const query = `
+      SELECT DISTINCT chatroom_id
+      FROM chat
+      WHERE username = ?
+    `;
+
+    try {
+        const connection = await pool.getConnection();
+        const [results] = await connection.query(query, [username]);
+        const chatrooms = results.map(row => row.chatroom_id);
+        res.json(chatrooms);
+        connection.release();
+    } catch (err) {
+        console.error('유저의 채팅방 목록 조회 오류:', err);
+        res.status(500).json({ error: err.message });
+    }
+});
+
 // 회원가입 엔드포인트
 app.post('/api/signup', async (req, res) => {
     const { username, password, email } = req.body;

@@ -1,0 +1,32 @@
+.chatusers-container {
+    width: 250px; /* 사용자 목록의 너비를 지정 */
+    padding: 15px; /* 목록 안쪽의 패딩을 지정 */
+    background-color: #f9f9f9; /* 배경 색상을 지정 */
+    border-left: 1px solid #ddd; /* 왼쪽 테두리를 추가 */
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1); /* 오른쪽 그림자 추가 */
+    overflow-y: auto; /* 목록이 길어지면 스크롤 가능하도록 설정 */
+    height: 100vh; /* 전체 화면 높이를 차지 */
+    position: fixed; /* 고정 위치 설정 */
+    right: 0; /* 오른쪽에 위치 */
+    top: 0; /* 위쪽에 위치 */
+  }
+  
+  .chatusers-container h2 {
+    margin-top: 0; /* 제목의 상단 여백을 제거 */
+    font-size: 1.2em; /* 제목 글꼴 크기를 지정 */
+  }
+  
+  .chatusers-container ul {
+    list-style-type: none; /* 목록 스타일을 제거 */
+    padding-left: 0; /* 목록의 왼쪽 패딩을 제거 */
+  }
+  
+  .chatusers-container li {
+    padding: 10px 0; /* 항목 간의 패딩을 지정 */
+    border-bottom: 1px solid #eee; /* 항목 하단에 테두리를 추가 */
+    font-size: 1em; /* 항목 글꼴 크기를 지정 */
+  }
+  
+  .chatusers-container li:last-child {
+    border-bottom: none; /* 마지막 항목의 하단 테두리를 제거 */
+  }
