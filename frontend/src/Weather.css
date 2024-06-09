@@ -1,0 +1,30 @@
+.weather-container {
+    width: 500px;
+    margin: 0 auto;
+    margin-top: 80px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    text-align: center;
+  }
+  
+  .weather-title {
+    font-size: 30px; 
+    color: black;
+  }
+  
+  .weather-info {
+    margin-top: 20px;
+  }
+  
+  .weather-temp, .weather-desc {
+    font-size: 18px;
+    color: black;
+  }
+  
+  .weather-icon {
+    margin-top: 30px;
+    width: 150px;
+    height: 150px;
+  }
