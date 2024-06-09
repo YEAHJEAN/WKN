@@ -18,7 +18,7 @@ const Sidebar = ({ isVisible, onClose }) => {
   };
 
   const handleChatButtonClick = () => {
-    navigate('/chatroom');
+    navigate('/chatroomlist');
     onClose();
   };
 
