@@ -9,7 +9,7 @@
   border-radius: 10px;
   padding: 40px;
   background-color: #fff;
-  margin-top: 70px;
+  margin-top: 100px;
 }
 
 .mypage-box h1 {
@@ -18,59 +18,55 @@
   color: #333;
 }
 
-/* 이름, 이메일 레이블 스타일 */
 .mypage-box label {
   display: inline-block;
-  width: 60px; /* 레이블 너비 설정 */
-  margin-right: 10px; /* 레이블 사이 간격 설정 */
-  font-size: 18px; /* 레이블 폰트 크기 설정 */
-  color: #333; /* 레이블 텍스트 색상 설정 */
+  width: 60px; 
+  margin-right: 10px;
+  font-size: 18px;
+  color: #333;
 }
 
 .mypage-box #username {
-  width: calc(50% - 50px); /* 입력란 너비 설정 (레이블 너비와 여백 고려) */
+  width: calc(50% - 50px);
   padding: 15px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  margin-top: 45px; /* 위쪽 간격 설정 */
-  margin-bottom: 30px; /* 이름 입력란과 이메일 입력란 간격 설정 */
+  margin-top: 45px;
+  margin-bottom: 30px;
   margin-right: 50px;
 }
 
 .mypage-box #email {
-  width: calc(50% - 50px); /* 입력란 너비 설정 (레이블 너비와 여백 고려) */
+  width: calc(50% - 50px);
   padding: 15px;
   border-radius: 5px;
   border: 1px solid #ccc;
   margin-right: 50px;
 }
 
-.button-container {
+.mypage-button-container {
   display: flex;
-  justify-content: center; /* 버튼들을 가운데 정렬 */
-  align-items: center; /* 수직 가운데 정렬 */
-  margin-top: 10px; /* 버튼들 위쪽 간격 조정 */
+  align-items: center;
 }
 
 .logout-button,
 .withdraw-button {
-  width: 150px;
-  height: 50px;
-  font-size: 20px; /* 버튼 텍스트 크기 설정 */
+  padding: 8px 16px;
+  font-size: 16px;
   border: none;
-  background: none;
-  color: black;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.vertical-separator {
+  height: 30px;
+  width: 1px;
+  background-color: #ccc;
+  margin: 0 16px;
+  margin-top: 30px;
 }
 
 .logout-button:hover,
 .withdraw-button:hover {
-  background: none;
-}
-
-.vertical-separator {
-  width: 1px;
-  height: 50px; /* 세로 경계선 높이 설정 */
-  background-color: #ccc;
-  margin: 10px 20px -20px; /* 버튼 간격 유지 및 경계선 아래로 이동 */
+  background-color: #CCA63D;
 }

@@ -77,7 +77,7 @@ function MyPage() {
           <label htmlFor="email">이메일 </label>
           <input type="text" id="email" value={email} readOnly />
         </div>
-        <div className="button-container">
+        <div className="mypage-button-container">
           <button onClick={handleLogout} className="logout-button">로그아웃</button>
           <div className="vertical-separator"></div>
           <button onClick={handleWithdraw} className="withdraw-button">회원탈퇴</button>

@@ -15,7 +15,7 @@
 
 .post-box .input-field:focus {
   outline: none;
-  border-color: #007bff;
+  border-color: black;
 }
 
 .post-box textarea.input-field {
