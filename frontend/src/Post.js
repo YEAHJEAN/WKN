@@ -45,11 +45,6 @@ function Post() {
       return;
     }
 
-    if (!content) {
-      alert('내용을 입력해주세요.');
-      return;
-    }
-
     if (!category) {
       alert('카테고리를 선택해주세요.');
       return;

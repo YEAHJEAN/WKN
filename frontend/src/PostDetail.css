@@ -1,86 +1,82 @@
 .postdetail-box {
-  width: 50%;
-  height: 550px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 20px;
-  margin: 3px auto;
+  position: relative; /* 상대 위치 설정 추가 */
+  padding: 20px; /* 내부 여백 추가 */
+  border: 1px solid #ccc; /* 테두리 추가 */
+  border-radius: 8px; /* 모서리 둥글게 */
   background-color: white;
+  max-width: 800px; /* 최대 너비 설정 */
+  margin: 40px auto 0; /* 위쪽 여백 추가 및 가운데 정렬 */
 }
 
 .postdetail-box h1 {
-  margin-top: 0px;
-  margin-bottom: 10px;
-  text-align: left;
+  font-size: 30px; /* 글꼴 크기 */
+  font-weight: bold; /* 글꼴 굵기 */
+  margin-top: 5px;
+  margin-bottom: 10px; /* 아래쪽 여백 */
+  color: #333; /* 글꼴 색상 */
 }
 
 .postdetail-box p {
-  margin: 3px;
-  text-align: left;
+  font-size: 16px; /* 글꼴 크기 */
+  line-height: 2.5; /* 줄 간격 */
+  margin-top: -5px;
+  margin-bottom: 15px; /* 아래쪽 여백 */
+  margin-left: 3px; /* 글씨 앞 여백 */
 }
 
-.postdetail-box hr {
-  margin: 20px 0;
-  border: none;
-  border-top: 1px solid #ccc;
+.post-image {
+  max-width: 100%;
+  max-height: 230px;
+  margin-bottom: 10px;
 }
 
-.postdetail-box .toggle-button {
-  width: 40px;
-  margin-right: 10px;
-  padding: 10px 20px;
-  background: none;
+.toggle-button {
+  position: absolute;
+  top: -10px; /* 버튼의 위치 조정 */
+  right: 20px; /* 버튼의 위치 조정 */
+  background: transparent; /* 배경색 투명 설정 */
   border: none;
-  border-radius: 4px;
   cursor: pointer;
+  padding: 0; /* 추가된 여백 제거 */
+  width: 30px; /* 버튼 크기 조정 */
+  height: 30px; /* 버튼 크기 조정 */
+}
+
+.toggle-button img {
+  width: 100%; /* 이미지가 버튼 크기에 맞도록 조정 */
+  height: 100%; /* 이미지가 버튼 크기에 맞도록 조정 */
+}
+
+.toggle-button:hover {
+  background: transparent; /* 배경색 투명 유지 */
+}
+
+.button-container {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  position: relative;
-  top: -197px;
+  position: absolute;
+  top: 60px; /* 버튼의 위치 조정 */
+  right: 20px; /* 버튼의 위치 조정 */
+  background-color: #fff; /* 배경색 추가 */
+  border: 1px solid #ccc; /* 테두리 추가 */
+  border-radius: 4px; /* 모서리 둥글게 */
+  padding: 10px; /* 내부 여백 추가 */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
 }
 
-.postdetail-box .toggle-button img {
-  width: 40px;
-  height: 40px;
-}
-
-.postdetail-box .toggle-button:hover {
-  background-color: transparent;
-}
-
-.postdetail-box .button-container {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin-top: -210px;
-}
-
-.postdetail-box .button-container .edit-button,
-.postdetail-box .button-container .delete-button {
-  width: auto;
-  padding: 10px;
-  margin: 3px;
-  background-color: transparent;
-  color: black;
-}
-
-.postdetail-box .vertical-separator {
-  width: 1px;
-  height: 30px;
-  background-color: #ccc;
-  margin-top: -20px;
-  margin-right: 10px;
-}
-
-.content-wrapper {
-  margin-bottom: -140px;
-}
-
-.content-wrapper hr {
-  margin-top: 160px;
+.edit-button, .delete-button {
+  background-color: #F2CB61;
   border: none;
-  border-top: 1px solid #ccc;
+  cursor: pointer;
+  margin-top: 5px;
+  display: flex; /* 플렉스 박스로 설정 */
+  justify-content: center; /* 가로 가운데 정렬 */
+  align-items: center; /* 세로 가운데 정렬 */
+  text-align: center; /* 텍스트 가운데 정렬 */
+  height: 40px; /* 버튼 높이 설정 */
+  width: 100px; /* 버튼 너비 설정 */
+  border-radius: 4px; /* 버튼 모서리 둥글게 */
 }
 
 .comments-section {
@@ -98,7 +94,7 @@
 }
 
 .comments-section li {
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 
 .comments-section p {
@@ -117,16 +113,9 @@
 
 .comment-item {
   border-bottom: 1px solid #ccc;
-  padding-bottom: 25px;
+  padding-bottom: 30px; /* 변경된 값 */
 }
 
-.comment-item:last-child {
-  border-bottom: none;
-}
-
-.comment-item p {
-  margin-bottom: 5px;
-}
 
 .comments-section .comment-button {
   width: 70px;
@@ -142,26 +131,16 @@
   margin-top: -56px;
 }
 
-/* 수정 모드 입력 필드 스타일 - 입력 필드 */
-.edit-input {
-  width: 800px;
-  padding: 10px;
-  margin-top: 40px;
-  font-size: 16px;
-  margin-left: auto;
-  margin-right: auto;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  display: block;
+.comments-section .comment-button:hover {
+  background-color: #CCA63D;
 }
 
-/* 수정 모드 입력 필드 스타일 - 텍스트 영역 */
+/* 수정 모드 입력 필드 공통 스타일 */
+.edit-input,
 .edit-textarea {
   width: 800px;
-  height: 350px;
   padding: 10px;
-  margin-top: 20px;
+  margin-top: 70px; /* 입력 필드의 상단 여백 */
   font-size: 16px;
   margin-left: auto;
   margin-right: auto;
@@ -171,64 +150,53 @@
   display: block;
 }
 
-/* 포커스 시 테두리 색상 변경 */
-.edit-input:focus, .edit-textarea:focus {
-  border-color: black;
-  outline: none;
+/* 수정 모드 텍스트 영역 스타일 */
+.edit-textarea {
+  height: 350px; /* 텍스트 영역의 높이 설정 */
+  margin-top: 20px; /* 텍스트 영역의 상단 여백 조정 */
+}
+
+/* 수정 모드 버튼 공통 스타일 */
+.save-button,
+.cancel-button {
+  padding: 8px 12px; /* 버튼의 패딩 설정 */
+  font-size: 14px; /* 버튼의 글꼴 크기 설정 */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 10px auto; /* 버튼을 수평 중앙으로 이동 */
+  width: 100px; /* 버튼 가로 길이 설정 */
+  display: block; /* 버튼을 블록 요소로 지정하여 가로 중앙 정렬을 위한 margin auto 사용 */
 }
 
 /* 저장 버튼 스타일 */
 .save-button {
-  display: block;
-  width: 150px;
-  padding: 10px;
-  margin-top: 15px;
-  margin-right: 750px;
-  margin-left: auto;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
   background-color: #F2CB61;
-  color: white;
+  color: white; /* 텍스트 색상 설정 */
 }
 
 /* 취소 버튼 스타일 */
 .cancel-button {
-  display: block;
-  width: 150px;
-  padding: 10px;
-  margin-top: -40px;
-  margin-right: 550px;
-  margin-left: auto;
-  color: #fff;
-  border: none;
-  border-radius: 4px; 
-  cursor: pointer;
   background-color: #F2CB61;
-  color: white;
+  color: white; /* 텍스트 색상 설정 */
 }
 
-/* 댓글 삭제 버튼*/
+/* 수정 모드 버튼 컨테이너 */
+.button-container {
+  text-align: center; /* 버튼을 수평 중앙으로 이동 */
+}
+
+.comments-section {
+  margin-top: 20px;
+}
+
 .comment-delete-button {
-  width: 65px;
-  margin-top: -55px;
+  background-color: #F2CB61; /* 배경색 설정 */
+  border: none; /* 테두리 제거 */
+  cursor: pointer; /* 커서 설정 */
+  padding: 8px 12px; /* 내부 여백 설정 */
+  border-radius: 4px; /* 모서리 둥글게 설정 */
+  width: 60px; /* 가로 길이 설정 */
+  margin-top: -70px; /* 위로 이동 */
   margin-left: 210px;
-  background-color: #F2CB61;
-  color: white;
-  border: none; 
-  padding: 8px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s;
-}
-
-.comment-delete-button:hover {
-  background-color: #CCA63D;
-  color: #fff;
-}
-
-.comment-delete-button:active {
-  background-color: #CCA63D;
 }

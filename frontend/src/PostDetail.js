@@ -188,8 +188,7 @@ const handleCommentDelete = async (commentId) => {
           <h1>{post.title}</h1>
           <p>카테고리: {post.category} | 작성자: {post.author} | 작성일: {new Date(post.created_at).toLocaleDateString('ko-KR')}</p>
           <hr />
-          {/* 이미지 보여주기 */}
-          {post.imageUrl && <img src={`http://43.202.124.253:3001${post.imageUrl}`} style={{ maxWidth: '100%', maxHeight: '230px', marginBottom: '10px' }} onError={() => console.log('이미지를 불러오는 중 오류 발생')} />}
+          {post.imageUrl && <img src={`http://43.202.124.253:3001${post.imageUrl}`} className="post-image" onError={() => console.log('이미지를 불러오는 중 오류 발생')} />}
           <div className="content-wrapper">
             <p>{post.content}</p>
             <hr />
@@ -201,7 +200,6 @@ const handleCommentDelete = async (commentId) => {
             {showEditDeleteButtons && email === post.author && (
               <div className="button-container">
                 <button className="edit-button" onClick={handleEdit}>수정</button>
-                <div className="vertical-separator"></div>
                 <button className="delete-button" onClick={handleDelete}>삭제</button>
               </div>
             )}
@@ -212,14 +210,14 @@ const handleCommentDelete = async (commentId) => {
             <button className="comment-button" onClick={handleCommentSubmit}>작성</button>
             <div className="comments-scroll" style={{ maxHeight: '150px', overflowY: 'auto' }}>
               <ul>
-                {comments.map((comment, index) => (
+                {comments.map((comment) => (
                   <li key={comment.id} className={`comment-item ${showEditDeleteButtons ? 'with-buttons' : ''}`}>
                     <p>작성자: {comment.author}</p>
                     <p>{comment.content}</p>
                     {comment.author === email && (
                       <button className="comment-delete-button" onClick={() => handleCommentDelete(comment.id)}>삭제</button>
                     )}
-                  </li>                                             
+                  </li>
                 ))}
               </ul>
             </div>
