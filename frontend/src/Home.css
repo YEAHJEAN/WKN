@@ -6,7 +6,7 @@
 .post-button-container {
   position: fixed;
   top: 160px;
-  right: 135px;
+  right: 145px;
 }
 
 .board-number-cell {
@@ -32,7 +32,7 @@
   width: 80%; /* 너비를 조정하여 보다 가운데에 위치하도록 설정 */
   position: fixed;
   top: 35px; /* 상단 여백 조정 */
-  left: calc(50% + 325px); /* 오른쪽으로 조금 이동 */
+  left: calc(50% + 420px); /* 오른쪽으로 조금 이동 */
   transform: translateX(-50%);
 }
 
