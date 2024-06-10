@@ -50,8 +50,8 @@ function Information() {
     <h2>Fukuoka Embassy Information</h2>
     <p><img src="/Address.png" className="address-icon"/><a href="https://www.google.com/maps/search/?api=1&query=후쿠오카 대사관 주소">1-1-3 Jigyohama Chuo-ku Fukuoka-shi, Fukuoka-ken, Japan 810-0065</a></p>
     <p><img src="/HomePage.png" className="homepage-icon"/><a href="https://overseas.mofa.go.kr/jp-fukuoka-ko/index.do">주후쿠오카 대한민국 총영사관</a></p>
-    <p><img src="/Phone.png" className="phone-icon"/><a href="tel:080-8588-2806">080-8588-2806</a></p>
     <p><img src="/Email.png" className="email-icon"/><a href="mailto:fukuoka@mofa.go.kr">fukuoka@mofa.go.kr</a></p>
+    <p><img src="/Phone.png" className="phone-icon"/><a href="tel:080-8588-2806">080-8588-2806</a></p>
     {/* Currency Converter */}
     <h2>Currency Converter</h2>
     <div className="input-container">
