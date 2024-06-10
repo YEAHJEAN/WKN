@@ -257,7 +257,24 @@ app.post('/api/confirmPasswordAndWithdraw', async (req, res) => {
                 await connection.query('DELETE FROM comments WHERE author = ?', [email]);
                 await connection.query('DELETE FROM comments WHERE post_id IN (SELECT id FROM posts WHERE author = ?)', [email]);
                 await connection.query('DELETE FROM posts WHERE author = ?', [email]);
+
+                // 사용자가 만든 채팅방과 관련된 메시지 삭제
+                await connection.query(`
+                    DELETE FROM chat
+                    WHERE chatroom_id IN (
+                        SELECT chatroom_id FROM (
+                            SELECT DISTINCT chatroom_id 
+                            FROM chat 
+                            WHERE username = ?
+                        ) as temp
+                    )
+                `, [user.username]);
+
+                // 사용자가 작성한 메시지 삭제
+                await connection.query('DELETE FROM chat WHERE username = ?', [user.username]);
+
                 const [result] = await connection.query('DELETE FROM users WHERE email = ?', [email]);
+
 
                 connection.release();
 
