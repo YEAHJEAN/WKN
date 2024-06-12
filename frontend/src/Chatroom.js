@@ -4,7 +4,10 @@ import io from 'socket.io-client';
 import axios from 'axios';
 import './Chatroom.css';
 
-const socket = io('https://kmk510.store:3001');
+const socket = io('https://kmk510.store', {
+  secure: true,
+  transports: ['websocket', 'polling']
+});
 
 function Chatroom() {
   const navigate = useNavigate();

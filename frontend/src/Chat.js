@@ -5,7 +5,10 @@ import './Chat.css';
 import ChatUsers from './ChatUsers';
 import ChatroomList2 from './ChatroomList2'; // ChatroomList2 컴포넌트 추가
 
-const socket = io('https://kmk510.store:3001');
+const socket = io('https://kmk510.store', {
+  secure: true,
+  transports: ['websocket', 'polling']
+});
 
 function Chat() {
   const { chatroom, username } = useParams();

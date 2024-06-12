@@ -188,7 +188,7 @@ const handleCommentDelete = async (commentId) => {
           <h1>{post.title}</h1>
           <p>카테고리: {post.category} | 작성자: {post.author} | 작성일: {new Date(post.created_at).toLocaleDateString('ko-KR')}</p>
           <hr />
-          {post.imageUrl && <img src={`https://kmk510.store:3001${post.imageUrl}`} className="post-image" onError={() => console.log('이미지를 불러오는 중 오류 발생')} />}
+          {post.imageUrl && <img src={`https://kmk510.store${post.imageUrl}`} className="post-image" onError={() => console.log('이미지를 불러오는 중 오류 발생')} />}
           <div className="content-wrapper">
             <p>{post.content}</p>
             <hr />
