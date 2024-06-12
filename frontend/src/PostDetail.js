@@ -42,7 +42,7 @@ const PostDetail = () => {
 
   const fetchComments = async () => {
     try {
-      const response = await axios.get(`/api/posts/${id}/comments`);
+      const response = await axios.get(`https://kmk510.store/api/posts/${id}/comments`);
       if (Array.isArray(response.data)) {
         setComments(response.data);
       } else {
@@ -57,7 +57,7 @@ const PostDetail = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await axios.get(`/api/posts/${id}`);
+        const response = await axios.get(`https://kmk510.store/api/posts/${id}`);
         setPost(response.data);
         setImageUrl(response.data.imageUrl); // 이미지 URL 설정
         console.log('이미지 URL:', response.data.imageUrl); // 콘솔 로그 추가
@@ -99,12 +99,12 @@ const PostDetail = () => {
         return;
       }
 
-      await axios.put(`/api/posts/${id}`, {
+      await axios.put(`https://kmk510.store/api/posts/${id}`, {
         title: editedTitle,
         content: editedContent,
       });
 
-      const response = await axios.get(`/api/posts/${id}`);
+      const response = await axios.get(`https://kmk510.store/api/posts/${id}`);
       setPost(response.data);
 
       setIsEditing(false);
@@ -125,7 +125,7 @@ const PostDetail = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`/api/posts/${id}`);
+      await axios.delete(`https://kmk510.store/api/posts/${id}`);
       alert('삭제되었습니다.');
       navigate('/home');
     } catch (error) {
@@ -141,7 +141,7 @@ const PostDetail = () => {
         return;
       }
 
-      await axios.post(`/api/posts/${id}/comments`, {
+      await axios.post(`https://kmk510.store/api/posts/${id}/comments`, {
         author: email,
         content: newComment,
       });
@@ -157,7 +157,7 @@ const PostDetail = () => {
   // 댓글 삭제 핸들러 함수 수정
 const handleCommentDelete = async (commentId) => {
   try {
-      await axios.delete(`/api/posts/${id}/comments/${commentId}`);
+      await axios.delete(`https://kmk510.store/api/posts/${id}/comments/${commentId}`);
       alert('댓글이 삭제되었습니다.');
       fetchComments();
   } catch (error) {
@@ -188,7 +188,7 @@ const handleCommentDelete = async (commentId) => {
           <h1>{post.title}</h1>
           <p>카테고리: {post.category} | 작성자: {post.author} | 작성일: {new Date(post.created_at).toLocaleDateString('ko-KR')}</p>
           <hr />
-          {post.imageUrl && <img src={`http://43.202.124.253:3001${post.imageUrl}`} className="post-image" onError={() => console.log('이미지를 불러오는 중 오류 발생')} />}
+          {post.imageUrl && <img src={`https://kmk510.store:3001${post.imageUrl}`} className="post-image" onError={() => console.log('이미지를 불러오는 중 오류 발생')} />}
           <div className="content-wrapper">
             <p>{post.content}</p>
             <hr />

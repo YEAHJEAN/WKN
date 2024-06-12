@@ -21,7 +21,7 @@ function MyPage() {
 
   const fetchUserData = async (email) => {
     try {
-      const response = await axios.get(`/api/userdata?email=${email}`);
+      const response = await axios.get(`https://kmk510.store/api/userdata?email=${email}`);
       if (response.status === 200) {
         console.log('가져온 사용자 데이터:', response.data);  // 데이터 로그 추가
         setUsername(response.data.username);
@@ -34,7 +34,7 @@ function MyPage() {
   };
 
   const handleLogout = () => {
-    axios.post('/api/logout')
+    axios.post('https://kmk510.store/api/logout')
       .then(response => {
         sessionStorage.removeItem('email');
         console.log('세션에서 이메일 삭제:', email);

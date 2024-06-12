@@ -70,7 +70,7 @@ function Post() {
 
       console.log('전송하는 데이터:', formData);
 
-      const response = await axios.post('/api/posts', formData, {
+      const response = await axios.post('https://kmk510.store/api/posts', formData, {
           headers: {
               'Content-Type': 'multipart/form-data'
           }

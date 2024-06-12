@@ -58,7 +58,7 @@ const Signup = () => {
           password: formData.password,
           email: `${formData.email}@${formData.emailDomain}`
         };
-        await axios.post('/api/signup', requestData);
+        await axios.post('https://kmk510.store/api/signup', requestData);
         alert('회원가입 성공!');
         navigate('/');
       } catch (error) {

@@ -12,7 +12,7 @@ const ChatroomList = () => {
   useEffect(() => {
     const fetchChatrooms = async () => {
       try {
-        const response = await axios.get('/api/chatrooms');
+        const response = await axios.get('https://kmk510.store/api/chatrooms');
         setChatrooms(response.data);
       } catch (error) {
         console.error('Error fetching chatrooms:', error);
@@ -21,7 +21,7 @@ const ChatroomList = () => {
 
     const fetchUsername = async () => {
       try {
-        const response = await axios.get(`/api/userdata?email=${email}`);
+        const response = await axios.get(`https://kmk510.store/api/userdata?email=${email}`);
         if (response.status === 200) {
           setUsername(response.data.username);
         } else {

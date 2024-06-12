@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 import axios from 'axios';
 import './Chatroom.css';
 
-const socket = io('http://43.202.124.253:3001');
+const socket = io('https://kmk510.store:3001');
 
 function Chatroom() {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ function Chatroom() {
 
   const fetchUserData = async (email) => {
     try {
-      const response = await axios.get(`/api/userdata?email=${email}`);
+      const response = await axios.get(`https://kmk510.store/api/userdata?email=${email}`);
       if (response.status === 200) {
         console.log('유저 데이터 가져오기 성공:', response.data);
         setUsername(response.data.username);

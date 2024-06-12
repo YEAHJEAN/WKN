@@ -11,7 +11,7 @@ function PasswordConfirmation({ onWithdraw }) {
     const email = sessionStorage.getItem('email'); // 세션에서 이메일 가져오기
 
     // 비밀번호 확인 후 회원 탈퇴 처리
-    axios.post('/api/confirmPasswordAndWithdraw', { email, password })
+    axios.post('https://kmk510.store/api/confirmPasswordAndWithdraw', { email, password })
       .then(response => {
         if (response.status === 200) {
           onWithdraw(); // 부모 컴포넌트로 회원 탈퇴가 성공적으로 처리되었음을 알림

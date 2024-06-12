@@ -1,9 +1,9 @@
 const production = {
-    API_URL: "43.202.124.253",
+    API_URL: "https://kmk510.store",
 };
 
 const development = {
-    API_URL: "43.202.124.253",
+    API_URL: "https://kmk510.store",
 };
 
 module.exports =

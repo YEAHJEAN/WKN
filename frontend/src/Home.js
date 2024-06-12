@@ -22,7 +22,7 @@ const Home = () => {
 
   const getPosts = async (searchTerm = '', category = '') => {
     try {
-      const response = await axios.get('/api/posts');
+      const response = await axios.get('https://kmk510.store/api/posts');
       const postsData = Array.isArray(response.data) ? response.data : []; // 데이터 형식 확인 및 변환
       const filteredPosts = postsData.filter(post =>
         (post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||

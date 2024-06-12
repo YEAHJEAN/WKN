@@ -9,7 +9,7 @@ function ChatroomList2({ username }) {
   useEffect(() => {
     const fetchUserChatRooms = async () => {
       try {
-        const response = await axios.get(`/api/users/${username}/chatrooms`);
+        const response = await axios.get(`https://kmk510.store/api/users/${username}/chatrooms`);
         setChatRooms(response.data);
       } catch (error) {
         console.error('Error fetching user chat rooms:', error);

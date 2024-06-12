@@ -41,7 +41,7 @@ function Login() {
     // 유효성 검사 통과 여부 확인
     if (Object.keys(errors).length === 0) {
       try {
-        const response = await axios.post('/api/login', formData);
+        const response = await axios.post('https://kmk510.store/api/login', formData);
         console.log(response.data);
         
         // 세션에 이메일 저장

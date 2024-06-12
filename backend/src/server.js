@@ -544,5 +544,5 @@ app.get('*', (req, res) => {
 
 // 서버 시작
 server.listen(port, () => {
-    console.log(`서버가 http://43.202.124.253:${port} 에서 실행 중입니다.`);
+    console.log(`서버가 https://kmk510.store:${port} 에서 실행 중입니다.`);
 });

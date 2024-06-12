@@ -25,7 +25,7 @@ const NewsList = ({ category }) => {
             setLoading(true);
             try {
                 console.log(`Fetching news for category: ${category}`);
-                const response = await axios.get(`/api/news`, {
+                const response = await axios.get(`https://kmk510.store/api/news`, {
                     params: { category } // 카테고리 값을 쿼리 파라미터로 전달
                 });
                 console.log('News fetched successfully:', response.data);

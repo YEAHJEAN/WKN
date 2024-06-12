@@ -8,7 +8,7 @@ function ChatUsers({ chatroomId }) {
   useEffect(() => {
     const fetchActiveUsers = async () => {
       try {
-        const response = await axios.get(`/api/chatrooms/${chatroomId}/users`);
+        const response = await axios.get(`https://kmk510.store/api/chatrooms/${chatroomId}/users`);
         setActiveUsers(response.data);
       } catch (error) {
         console.error('Error fetching active users:', error);
