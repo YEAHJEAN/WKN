@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './ForgotPassword.css';
@@ -41,7 +41,7 @@ function ForgotPassword() {
   const handleSendCode = async (e) => {
     e.preventDefault();
     const validationErrors = validateEmail(email);
-  
+
     if (Object.keys(validationErrors).length === 0) {
       try {
         const response = await axios.post('https://kmk510.store/api/send-code', { email });
@@ -58,7 +58,7 @@ function ForgotPassword() {
       window.alert('이메일을 입력해주세요');
       setErrors(validationErrors);
     }
-  };  
+  };
 
   const handleVerifyCode = async (e) => {
     e.preventDefault();
@@ -84,13 +84,18 @@ function ForgotPassword() {
       const response = await axios.post('https://kmk510.store/api/reset-password', { email, newPassword });
       console.log('Password reset response:', response.data);
       setResetSuccess(true);
-      window.alert('비밀번호가 성공적으로 재설정되었습니다.'); // 비밀번호 재설정 성공 메시지 alert 창으로 표시
-      navigate('/login');
     } catch (error) {
       console.error('Error resetting password:', error.response?.data || error.message);
       window.alert('비밀번호 재설정에 실패했습니다. 다시 시도해주세요.');
     }
   };
+
+  useEffect(() => {
+    if (resetSuccess) {
+      window.alert('비밀번호가 성공적으로 재설정되었습니다.');
+      navigate('/login');
+    }
+  }, [resetSuccess, navigate]);
 
   const validateEmail = (email) => {
     const errors = {};
