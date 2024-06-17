@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Signup from './Signup';
 import Login from './Login';
+import ForgotPassword from './ForgotPassword';
 import Home from './Home';
 import Post from './Post';
 import PostDetail from './PostDetail';
@@ -18,6 +19,7 @@ const App = () => {
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/forgotpassword" element={<ForgotPassword />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/home" element={<Home />} />
       <Route path="/post" element={<Post />} />
