@@ -84,6 +84,8 @@ function ForgotPassword() {
       const response = await axios.post('https://kmk510.store/api/reset-password', { email, newPassword });
       console.log('Password reset response:', response.data);
       setResetSuccess(true);
+      window.alert('비밀번호가 성공적으로 재설정되었습니다.');
+      navigate('/login');
     } catch (error) {
       console.error('Error resetting password:', error.response?.data || error.message);
       window.alert('비밀번호 재설정에 실패했습니다. 다시 시도해주세요.');
@@ -91,8 +93,8 @@ function ForgotPassword() {
   };
 
   useEffect(() => {
+    console.log('resetSuccess state changed:', resetSuccess);
     if (resetSuccess) {
-      window.alert('비밀번호가 성공적으로 재설정되었습니다.');
       navigate('/login');
     }
   }, [resetSuccess, navigate]);
