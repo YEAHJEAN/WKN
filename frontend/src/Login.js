@@ -63,22 +63,27 @@ function Login() {
   };  
   
   return (
-      <div className="login-box">
-        <form onSubmit={handleSubmit}>
-          <h1 align="center">로그인</h1>
-          <div className="input-group">
-            <input type="text" name="email" placeholder="이메일" value={formData.email} onChange={handleChange} />
-            {errors.email && <span>{errors.email}</span>}
-          </div>
-          <div className="input-group">
-            <input type="password" name="password" placeholder="비밀번호" value={formData.password} onChange={handleChange} />
-            {errors.password && <span>{errors.password}</span>}
-          </div>
-          <button type="submit" style={{ marginBottom: '17px' }}>로그인</button>
-          <div align="center">아직 계정이 없으신가요? <Link to="/Signup">회원가입</Link></div>
-        </form>
+    <div className="login-box">
+      <form onSubmit={handleSubmit}>
+        <h1 align="center">로그인</h1>
+        <div className="input-group">
+          <input type="text" name="email" placeholder="이메일" value={formData.email} onChange={handleChange} />
+          {errors.email && <span>{errors.email}</span>}
+        </div>
+        <div className="input-group">
+          <input type="password" name="password" placeholder="비밀번호" value={formData.password} onChange={handleChange} />
+          {errors.password && <span>{errors.password}</span>}
+        </div>
+        <button type="submit" style={{ marginBottom: '17px' }}>로그인</button>
+        <div className="link-container">
+        아직 계정이 없으신가요? <Link to="/signup" className="signup-link">회원가입</Link>
       </div>
-  );
+      <div className="link-container">
+        <Link to="/forgot-password" className="forgot-password-link">비밀번호 찾기</Link>
+      </div>
+    </form>
+  </div>
+);
 }
 
 export default Login;

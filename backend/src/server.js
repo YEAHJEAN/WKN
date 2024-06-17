@@ -9,6 +9,7 @@ const http = require('http');
 const socketIo = require('socket.io');
 const path = require('path');
 const axios = require('axios');
+const nodemailer = require('nodemailer');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -59,6 +60,19 @@ const io = socketIo(server, {
         methods: ['GET', 'POST'],
     },
 });
+
+// 사용자가 채팅방에 입장할 때 클라이언트에게 사용자 목록을 업데이트하는 이벤트 발송
+async function sendUpdatedUserList(chatroomId) {
+    try {
+        const connection = await pool.getConnection();
+        const [rows] = await connection.query('SELECT DISTINCT username FROM chat WHERE chatroom_id = ?', [chatroomId]);
+        connection.release();
+        const users = rows.map(row => row.username);
+        io.to(chatroomId).emit('updateUsers', users); // 특정 방의 모든 클라이언트에게 업데이트된 사용자 목록을 보냄
+    } catch (error) {
+        console.error('사용자 목록 조회 및 업데이트 오류:', error);
+    }
+}
 
 // Socket.IO 이벤트 처리
 io.on('connection', async (socket) => {
@@ -211,6 +225,100 @@ app.post('/api/login', async (req, res) => {
     } catch (err) {
         console.error('로그인 오류:', err);
         res.status(500).send('로그인 오류가 발생했습니다.');
+    }
+});
+
+// 임시 저장소로 사용할 객체
+const emailCodes = {};
+const verifiedEmails = {}; // 인증이 완료된 이메일을 저장할 객체
+const users = {
+  'fly1043@naver.com': {
+    passwordHash: '', // 실제 비밀번호 해시값을 저장할 공간
+  },
+};
+
+// SMTP 설정
+const transporter = nodemailer.createTransport({
+  host: 'smtp.naver.com',
+  port: 465,
+  secure: true, // SSL 사용
+  auth: {
+    user: 'fly1043@naver.com',
+    pass: 'PGGN1T2X6TVQ', // 네이버 계정의 앱 비밀번호
+  },
+});
+
+// 인증번호 전송 엔드포인트
+app.post('/api/send-code', (req, res) => {
+    const { email } = req.body;
+    const code = Math.floor(100000 + Math.random() * 900000).toString(); // 6자리 인증번호 생성
+    emailCodes[email] = code;
+  
+    const mailOptions = {
+      from: 'fly1043@naver.com',
+      to: email,
+      subject: '[WKN] 인증번호를 안내해드립니다.',
+      text: `인증번호는 ${code}입니다.`,
+    };
+  
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+        return res.status(500).send('인증번호 발송에 실패했습니다.');
+      }
+      res.send({ message: '인증번호가 이메일로 발송되었습니다.' });
+    });
+  });
+  
+  // 인증번호 확인 엔드포인트
+  app.post('/api/verify-code', (req, res) => {
+    const { email, code } = req.body;
+    if (emailCodes[email] && emailCodes[email] === code) {
+      verifiedEmails[email] = true; // 인증 성공 시 인증 상태 저장
+      delete emailCodes[email]; // 인증번호 삭제
+      res.send({ message: '인증이 완료되었습니다.', verified: true });
+    } else {
+      res.status(400).send({ message: '인증번호가 일치하지 않습니다.' });
+    }
+  });
+  
+// 비밀번호 재설정 엔드포인트
+app.post('/api/reset-password', async (req, res) => {
+    const { email, newPassword } = req.body;
+
+    try {
+        // 인증이 완료된 경우에만 비밀번호 재설정
+        if (!verifiedEmails[email]) {
+            return res.status(400).send('인증되지 않은 요청입니다.');
+        }
+
+        console.log('Before password reset:', users[email]); // 비밀번호 재설정 전 상태 확인
+
+        // 비밀번호 해싱
+        const salt = await bcrypt.genSalt(10);
+        const passwordHash = await bcrypt.hash(newPassword, salt);
+
+        // MySQL 데이터베이스에서 비밀번호 업데이트 쿼리 실행
+        console.log('Executing password update query...');
+        await new Promise((resolve, reject) => {
+            pool.query('UPDATE users SET password = ? WHERE email = ?', [passwordHash, email], (err, result) => {
+                if (err) {
+                    console.error('Database update failed:', err.message);
+                    reject(err);
+                } else {
+                    console.log('After password reset:', { email, passwordHash }); // 비밀번호 재설정 후 상태 확인
+                    resolve(result);
+                }
+            });
+        });
+
+        // 인증 완료 상태 삭제
+        delete verifiedEmails[email];
+
+        res.send({ message: '비밀번호가 성공적으로 재설정되었습니다.' });
+    } catch (error) {
+        console.error('Error:', error.message);
+        res.status(500).send('비밀번호 재설정에 실패했습니다.');
     }
 });
 
