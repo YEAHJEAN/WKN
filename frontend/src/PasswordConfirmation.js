@@ -30,6 +30,12 @@ function PasswordConfirmation({ onWithdraw }) {
     navigate('/home');
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleWithdraw();
+    }
+  };
+
   return (
     <div>
       <button onClick={handleClick} style={{ cursor: 'pointer', border: 'none', background: 'none', width: '300px', display: 'block', margin: '0 auto', outline: 'none' }}>
@@ -38,7 +44,14 @@ function PasswordConfirmation({ onWithdraw }) {
       <div className="password-confirmation-page">
         <h2>비밀번호 확인</h2>
         <div>
-          <input type="password" id="password" value={password} placeholder="비밀번호를 입력해주세요" onChange={(e) => setPassword(e.target.value)} />
+          <input
+            type="password"
+            id="password"
+            value={password}
+            placeholder="비밀번호를 입력해주세요"
+            onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={handleKeyDown} // 엔터 키 감지
+          />
         </div>
         <button onClick={handleWithdraw}>확인 및 탈퇴</button>
       </div>
