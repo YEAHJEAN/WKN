@@ -63,7 +63,7 @@ function Chat() {
     }
   };
 
-  const handleKeyPress = (event) => {
+  const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       sendMessage();
     }
@@ -88,7 +88,7 @@ function Chat() {
           ))}
         </div>
         <div className="message-input-container">
-          <input type="text" className="message-input" value={message} onChange={(e) => setMessage(e.target.value)} onKeyPress={handleKeyPress} />
+          <input type="text" className="message-input" value={message} onChange={(e) => setMessage(e.target.value)} onKeyDown={handleKeyDown} />
           <button onClick={sendMessage} className="send-button">전송</button>
         </div>
       </div>
