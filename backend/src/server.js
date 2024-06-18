@@ -100,7 +100,7 @@ io.on('connection', (socket) => {
         socket.join(chatRoomId);
 
         // 클라이언트에게 새로운 사용자가 채팅방에 입장했음을 알림
-        socket.broadcast.to(chatRoomId).emit('userJoined', '새로운 사용자가 채팅방에 입장했습니다.', socket.username);
+        socket.broadcast.to(chatRoomId).emit('userJoined', '새로운 사용자가 채팅방에 입장했습니다.');
 
         // 이전 메시지 가져와서 클라이언트에게 전송
         try {

@@ -23,32 +23,32 @@ function Chat() {
 
     // 클라이언트가 채팅방에 입장합니다.
     if (chatroom && username) {
-        console.log(`User ${username} has joined chatroom ${chatroom}`);
-        socket.emit('joinRoom', { roomId: chatroom, username }); // 방 ID와 사용자 이름을 함께 전달
+      console.log(`User ${username} has joined chatroom ${chatroom}`);
+      socket.emit('joinRoom', chatroom);
     }
 
     if (currentChat && username) {
-        socket.emit('joinRoom', { roomId: currentChat, username }); // 방 ID와 사용자 이름을 함께 전달
+      socket.emit('joinRoom', currentChat);
 
-        socket.on('initialMessages', (initialMessages) => {
-            setMessages(initialMessages);
-        });
+      socket.on('initialMessages', (initialMessages) => {
+        setMessages(initialMessages);
+      });
 
-        socket.on('Chat', (msg) => {
-            setMessages((prevMessages) => [...prevMessages, msg]);
-        });
+      socket.on('Chat', (msg) => {
+        setMessages((prevMessages) => [...prevMessages, msg]);
+      });
 
-        socket.on('userJoined', (username) => {
-            setUserJoined(`${username}님이 채팅방에 입장했습니다.`);
-        });
+      socket.on('userJoined', (username) => {
+        setUserJoined(`${username}님이 채팅방에 입장했습니다.`);
+      });
 
-        return () => {
-            socket.off('initialMessages');
-            socket.off('Chat');
-            socket.off('userJoined');
-        };
+      return () => {
+        socket.off('initialMessages');
+        socket.off('Chat');
+        socket.off('userJoined');
+      };
     }
-}, [chatroom, username, currentChat]);
+  }, [chatroom, username, currentChat]);
 
   const sendMessage = () => {
     if (message.trim() && username) {
