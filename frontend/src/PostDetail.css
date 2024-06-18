@@ -9,11 +9,12 @@
 }
 
 .postdetail-box h1 {
-  font-size: 28px; /* 글꼴 크기 */
-  font-weight: bold; /* 글꼴 굵기 */
+  font-size: 28px;
+  font-weight: bold;
   margin-top: 5px;
-  margin-bottom: 10px; /* 아래쪽 여백 */
-  color: #333; /* 글꼴 색상 */
+  margin-bottom: 10px;
+  color: #333;
+  text-align: left;
 }
 
 .postdetail-box p {

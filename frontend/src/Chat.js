@@ -11,24 +11,24 @@ const socket = io('https://kmk510.store', {
 });
 
 function Chat() {
-  const { chatroom, username } = useParams();
+  const { chatroom: chatroomParam, username } = useParams();
   const userId = 123; // 예시로 userId를 정의
-  const [currentChat, setCurrentChat] = useState(chatroom || 'general');
+  const [currentChat, setCurrentChat] = useState(chatroomParam || 'general');
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
-  const [userJoined, setUserJoined] = useState('');
+  const [userJoinedMessage, setUserJoinedMessage] = useState(''); // userJoinedMessage 상태 추가
 
   useEffect(() => {
-    console.log('URL params:', { chatroom, username });
+    console.log('URL params:', { chatroom: chatroomParam, username });
 
     // 클라이언트가 채팅방에 입장합니다.
-    if (chatroom && username) {
-      console.log(`User ${username} has joined chatroom ${chatroom}`);
-      socket.emit('joinRoom', chatroom);
+    if (chatroomParam && username) {
+      console.log(`User ${username} has joined chatroom ${chatroomParam}`);
+      socket.emit('joinRoom', { roomId: chatroomParam, username });
     }
 
     if (currentChat && username) {
-      socket.emit('joinRoom', currentChat);
+      socket.emit('joinRoom', { roomId: currentChat, username });
 
       socket.on('initialMessages', (initialMessages) => {
         setMessages(initialMessages);
@@ -38,8 +38,14 @@ function Chat() {
         setMessages((prevMessages) => [...prevMessages, msg]);
       });
 
-      socket.on('userJoined', (username) => {
-        setUserJoined(`${username}님이 채팅방에 입장했습니다.`);
+      socket.on('userJoined', (msg) => {
+        setUserJoinedMessage(`${msg.username}님이 채팅방에 입장했습니다.`);
+        const joinMessage = {
+          username: 'System',
+          message: `${msg.username}님이 채팅방에 입장했습니다.`,
+          timestamp: new Date()
+        };
+        setMessages((prevMessages) => [...prevMessages, joinMessage]);
       });
 
       return () => {
@@ -48,7 +54,7 @@ function Chat() {
         socket.off('userJoined');
       };
     }
-  }, [chatroom, username, currentChat]);
+  }, [chatroomParam, username, currentChat]);
 
   const sendMessage = () => {
     if (message.trim() && username) {
@@ -57,14 +63,20 @@ function Chat() {
     }
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      sendMessage();
+    }
+  };
+
   return (
     <div className="chat-and-users-container">
-      <ChatroomList2 username={username} /> {/* ChatroomList2 컴포넌트 추가 */}
-      <ChatUsers chatroomId={chatroom} />
+      <ChatroomList2 username={username} />
+      <ChatUsers chatroomId={chatroomParam} />
       <div className="chat-container">
         <h1>Chat</h1>
-        <hr /> {/* 가로 경계선 추가 */}
-        {userJoined && <div className="user-joined">{userJoined}</div>}
+        <hr />
+        {userJoinedMessage && <div className="user-joined">{userJoinedMessage}</div>}
         <div className="messages-container">
           {messages.map((msg, index) => (
             <div className={`message ${msg.username === username ? 'sent-message' : 'received-message'}`} key={index}>
@@ -76,8 +88,8 @@ function Chat() {
           ))}
         </div>
         <div className="message-input-container">
-          <input type="text" className="message-input" value={message} onChange={(e) => setMessage(e.target.value)} />
-          <button onClick={sendMessage} className="send-button">Send</button>
+          <input type="text" className="message-input" value={message} onChange={(e) => setMessage(e.target.value)} onKeyPress={handleKeyPress} />
+          <button onClick={sendMessage} className="send-button">전송</button>
         </div>
       </div>
     </div>
