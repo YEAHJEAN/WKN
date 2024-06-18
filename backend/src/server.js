@@ -94,14 +94,10 @@ io.on('connection', (socket) => {
     let chatRoomId; // 클라이언트가 속한 채팅방 ID를 저장할 변수
 
     // 클라이언트가 채팅방에 입장할 때 채팅방 ID를 받아옴
-    socket.on('joinRoom', async ({ roomId, username }) => {
+    socket.on('joinRoom', async (roomId) => {
         console.log(`클라이언트가 ${roomId} 채팅방에 입장함`);
         chatRoomId = roomId;
-        socket.username = username;
         socket.join(chatRoomId);
-
-        // 클라이언트에게 새로운 사용자가 채팅방에 입장했음을 알림
-        socket.broadcast.to(chatRoomId).emit('userJoined', '새로운 사용자가 채팅방에 입장했습니다.', socket.username);
 
         // 이전 메시지 가져와서 클라이언트에게 전송
         try {
