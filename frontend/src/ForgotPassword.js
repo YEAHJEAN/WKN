@@ -92,12 +92,12 @@ function ForgotPassword() {
     }
   };
 
-  useEffect(() => {
-    console.log('resetSuccess state changed:', resetSuccess);
-    if (resetSuccess) {
-      navigate('/login');
-    }
-  }, [resetSuccess, navigate]);
+//  useEffect(() => {
+//    console.log('resetSuccess state changed:', resetSuccess);
+//    if (resetSuccess) {
+//      navigate('/login');
+//    }
+//  }, [resetSuccess, navigate]);
 
   const validateEmail = (email) => {
     const errors = {};
