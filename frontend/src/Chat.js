@@ -24,11 +24,11 @@ function Chat() {
     // 클라이언트가 채팅방에 입장합니다.
     if (chatroom && username) {
       console.log(`User ${username} has joined chatroom ${chatroom}`);
-      socket.emit('joinRoom', chatroom);
+      socket.emit('joinRoom', { roomId: chatroom, username });
     }
 
     if (currentChat && username) {
-      socket.emit('joinRoom', currentChat);
+      socket.emit('joinRoom', { roomId: currentChat, username });
 
       socket.on('initialMessages', (initialMessages) => {
         setMessages(initialMessages);
